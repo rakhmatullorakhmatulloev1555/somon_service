@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Запчасти | СомонСервис</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563EB;
+            --primary-dark: #1D4ED8;
+            --secondary-color: #10B981;
+            --secondary-dark: #059669;
+            --danger-color: #EF4444;
+            --warning-color: #F59E0B;
+            --dark-color: #111827;
+            --light-color: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-400: #9CA3AF;
+            --gray-500: #6B7280;
+            --gray-600: #4B5563;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background-color: white;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .logo i {
+            font-size: 1.75rem;
+        }
+
+        .logo span {
+            color: var(--dark-color);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 1.5rem 0;
+        }
+
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-section h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--gray-500);
+            padding: 0 1.5rem;
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1.5rem;
+            color: var(--gray-600);
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background-color: var(--gray-100);
+            color: var(--primary-color);
+        }
+
+        .nav-item.active {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+            font-size: 1.125rem;
+        }
+
+        .sidebar-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .user-info h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .user-info p {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        /* Main content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background-color: white;
+            box-shadow: var(--shadow-sm);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .header-left p {
+            color: var(--gray-500);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            width: 280px;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-btn, .settings-btn {
+            position: relative;
+            background: none;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .notification-btn:hover, .settings-btn:hover {
+            background-color: var(--gray-100);
+            color: var(--primary-color);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--danger-color);
+        }
+
+        /* Parts Page */
+        .parts-container {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            background-color: var(--gray-100);
+        }
+
+        .parts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .parts-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .parts-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.625rem 1.25rem;
+            border-radius: var(--radius-md);
+            border: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background-color: white;
+            color: var(--gray-600);
+            border: 1px solid var(--gray-300);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--gray-100);
+            border-color: var(--gray-400);
+        }
+
+        .btn-success {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: var(--secondary-dark);
+        }
+
+        .btn-warning {
+            background-color: var(--warning-color);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background-color: #D97706;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .stat-info h3 {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .stat-info .value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            line-height: 1;
+        }
+
+        .stat-info .change {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .stat-info .change.positive {
+            color: var(--secondary-color);
+        }
+
+        .stat-info .change.negative {
+            color: var(--danger-color);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+        }
+
+        .stat-icon.total {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+        }
+
+        .stat-icon.low {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        .stat-icon.value {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--secondary-color);
+        }
+
+        .stat-icon.categories {
+            background-color: rgba(168, 85, 247, 0.1);
+            color: #8B5CF6;
+        }
+
+        /* Categories */
+        .categories-section {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .categories-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .categories-header h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .category-card {
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(37, 99, 235, 0.05);
+        }
+
+        .category-card.active {
+            border-color: var(--primary-color);
+            background-color: rgba(37, 99, 235, 0.1);
+        }
+
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+        }
+
+        .category-info h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .category-info p {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+        }
+
+        /* Parts Table */
+        .parts-table-container {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .parts-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+
+        .parts-table thead {
+            background-color: var(--gray-50);
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .parts-table th {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--gray-700);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+
+        .parts-table tbody tr {
+            border-bottom: 1px solid var(--gray-200);
+            transition: var(--transition);
+        }
+
+        .parts-table tbody tr:hover {
+            background-color: var(--gray-50);
+        }
+
+        .parts-table td {
+            padding: 1rem 1.5rem;
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+
+        .part-image {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-sm);
+            background-color: var(--gray-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-400);
+            font-size: 1.5rem;
+        }
+
+        .part-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .part-details h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .part-details p {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        .stock-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .stock-high {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--secondary-color);
+        }
+
+        .stock-medium {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+        }
+
+        .stock-low {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        .stock-out {
+            background-color: rgba(156, 163, 175, 0.1);
+            color: var(--gray-500);
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--gray-300);
+            background-color: white;
+            color: var(--gray-600);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            background-color: var(--gray-100);
+            color: var(--primary-color);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .pagination-info {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+        }
+
+        .pagination-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .page-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--gray-300);
+            background-color: white;
+            color: var(--gray-700);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .page-btn:hover {
+            background-color: var(--gray-100);
+        }
+
+        .page-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .page-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray-500);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--danger-color);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            font-size: 0.875rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -260px;
+                top: 0;
+                bottom: 0;
+            }
+            
+            .sidebar.active {
+                left: 0;
+            }
+            
+            .parts-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+            }
+            
+            .parts-controls {
+                justify-content: space-between;
+            }
+            
+            .header {
+                padding: 1rem;
+            }
+            
+            .search-box input {
+                width: 200px;
+            }
+            
+            .parts-container {
+                padding: 1rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .categories-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+
+        @media (max-width: 576px) {
+            .search-box input {
+                width: 150px;
+            }
+            
+            .header-right {
+                gap: 1rem;
+            }
+            
+            .parts-controls {
+                flex-wrap: wrap;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    
+    {% include "admin/sidebar.html" %}
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1>Запчасти</h1>
+                <p>Управление складом запчастей и комплектующих</p>
+            </div>
+            
+            <div class="header-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Поиск по названию, артикулу...">
+                </div>
+                
+                <div class="header-actions">
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge"></span>
+                    </button>
+                    <button class="settings-btn">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Parts Content -->
+        <div class="parts-container">
+            <div class="parts-header">
+                <h2>Склад запчастей</h2>
+                <div class="parts-controls">
+                    <button class="btn btn-outline" id="suppliersBtn">
+                        <i class="fas fa-truck"></i>
+                        Поставщики
+                    </button>
+                    <button class="btn btn-warning" id="lowStockBtn">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Низкий запас
+                    </button>
+                    <button class="btn btn-primary" id="newPartBtn">
+                        <i class="fas fa-plus"></i>
+                        Новая запчасть
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Всего наименований</h3>
+                        <div class="value" id="totalParts">0</div>
+                        <div class="change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+12 за месяц</span>
+                        </div>
+                    </div>
+                    <div class="stat-icon total">
+                        <i class="fas fa-boxes"></i>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>С низким запасом</h3>
+                        <div class="value" id="lowStockParts">0</div>
+                        <div class="change negative">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+3 за неделю</span>
+                        </div>
+                    </div>
+                    <div class="stat-icon low">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Общая стоимость</h3>
+                        <div class="value" id="totalValue">0 сомони</div>
+                        <div class="change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+5% за месяц</span>
+                        </div>
+                    </div>
+                    <div class="stat-icon value">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Категорий</h3>
+                        <div class="value" id="totalCategories">0</div>
+                        <div class="change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+2 за месяц</span>
+                        </div>
+                    </div>
+                    <div class="stat-icon categories">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Categories -->
+            <div class="categories-section">
+                <div class="categories-header">
+                    <h3>Категории запчастей</h3>
+                    <button class="btn btn-outline" id="manageCategoriesBtn">
+                        <i class="fas fa-cog"></i>
+                        Управление
+                    </button>
+                </div>
+                <div class="categories-grid" id="categoriesGrid">
+                    <!-- Categories will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Parts Table -->
+            <div class="parts-table-container">
+                <div class="table-responsive">
+                    <table class="parts-table" id="partsTable">
+                        <thead>
+                            <tr>
+                                <th>Запчасть</th>
+                                <th>Категория</th>
+                                <th>Артикул</th>
+                                <th>Цена закупки</th>
+                                <th>Цена продажи</th>
+                                <th>На складе</th>
+                                <th>Статус</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="partsTableBody">
+                            <!-- Parts will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="pagination">
+                    <div class="pagination-info" id="paginationInfo">
+                        Показано 1-10 из 45 запчастей
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="page-btn disabled" id="prevPageBtn">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn">4</button>
+                        <button class="page-btn" id="nextPageBtn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Part Modal -->
+    <div class="modal" id="partModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Новая запчасть</h3>
+                <button class="modal-close" id="closeModalBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="partForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="partName">Название *</label>
+                            <input type="text" id="partName" class="form-control" required placeholder="Экран iPhone 12">
+                        </div>
+                        <div class="form-group">
+                            <label for="partCategory">Категория *</label>
+                            <select id="partCategory" class="form-control" required>
+                                <option value="">Выберите категорию</option>
+                                <option value="screens">Экраны</option>
+                                <option value="batteries">Аккумуляторы</option>
+                                <option value="cases">Корпуса</option>
+                                <option value="keyboards">Клавиатуры</option>
+                                <option value="motherboards">Материнские платы</option>
+                                <option value="other">Другое</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="partSku">Артикул *</label>
+                            <input type="text" id="partSku" class="form-control" required placeholder="IPH12-SCR-01">
+                        </div>
+                        <div class="form-group">
+                            <label for="partBrand">Бренд</label>
+                            <input type="text" id="partBrand" class="form-control" placeholder="Apple, Samsung и т.д.">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="partPurchasePrice">Цена закупки (сомони) *</label>
+                            <input type="number" id="partPurchasePrice" class="form-control" required min="0" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label for="partSalePrice">Цена продажи (сомони) *</label>
+                            <input type="number" id="partSalePrice" class="form-control" required min="0" step="0.01">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="partStock">Количество на складе *</label>
+                            <input type="number" id="partStock" class="form-control" required min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="partMinStock">Минимальный запас</label>
+                            <input type="number" id="partMinStock" class="form-control" min="0" value="5">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="partSupplier">Поставщик</label>
+                        <select id="partSupplier" class="form-control">
+                            <option value="">Выберите поставщика</option>
+                            <option value="1">TechParts Ltd.</option>
+                            <option value="2">MobileComponents</option>
+                            <option value="3">ComputerSpare</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="partDescription">Описание</label>
+                        <textarea id="partDescription" class="form-control" rows="3" placeholder="Описание запчасти, совместимость и т.д."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="partNotes">Примечания</label>
+                        <textarea id="partNotes" class="form-control" rows="2" placeholder="Дополнительная информация"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelBtn">
+                    Отмена
+                </button>
+                <button class="btn btn-primary" id="savePartBtn">
+                    Сохранить
+                </button>
+            </div>
+        </div>
+    </div>
+    
+   <script>
+    // Глобальные переменные
+    let partsData = [];
+    let categoriesData = [];
+    let suppliersData = [];
+    let currentPage = 1;
+    const itemsPerPage = 10;
+    let filteredParts = [];
+    let currentSearch = "";
+    let currentCategory = "all";
+    let isEditing = false;
+    let currentEditId = null;
+
+    // Загрузка данных при открытии страницы
+    document.addEventListener('DOMContentLoaded', async function() {
+        await loadCategories();
+        await loadSuppliers();
+        await loadParts();
+        setupEventListeners();
+    });
+
+    // Загрузка категорий
+    async function loadCategories() {
+        try {
+            const response = await fetch('/api/parts/categories');
+            const result = await response.json();
+            if (result.success) {
+                categoriesData = result.data;
+                renderCategories();
+                populateCategorySelect();
+            }
+        } catch (error) {
+            console.error('Error loading categories:', error);
+        }
+    }
+
+    // Загрузка поставщиков
+    async function loadSuppliers() {
+        try {
+            const response = await fetch('/api/parts/suppliers/all');
+            const result = await response.json();
+            if (result.success) {
+                suppliersData = result.data;
+                populateSupplierSelect();
+            }
+        } catch (error) {
+            console.error('Error loading suppliers:', error);
+        }
+    }
+
+    // Загрузка запчастей
+    async function loadParts() {
+        try {
+            const response = await fetch('/api/parts');
+            const result = await response.json();
+            if (result.success) {
+                partsData = result.data;
+                filteredParts = [...partsData];
+                updateStats();
+                renderPartsTable();
+            }
+        } catch (error) {
+            console.error('Error loading parts:', error);
+        }
+    }
+
+    // Заполнение выпадающего списка категорий
+    function populateCategorySelect() {
+        const select = document.getElementById('partCategory');
+        select.innerHTML = '<option value="">Выберите категорию</option>';
+        
+        categoriesData.forEach(cat => {
+            const option = document.createElement('option');
+            option.value = cat.id;
+            option.textContent = cat.name;
+            select.appendChild(option);
+        });
+    }
+
+    // Заполнение выпадающего списка поставщиков
+    function populateSupplierSelect() {
+        const select = document.getElementById('partSupplier');
+        select.innerHTML = '<option value="">Выберите поставщика</option>';
+        
+        suppliersData.forEach(sup => {
+            const option = document.createElement('option');
+            option.value = sup.id;
+            option.textContent = sup.name;
+            select.appendChild(option);
+        });
+    }
+
+    // Отрисовка категорий
+    function renderCategories() {
+        const grid = document.getElementById('categoriesGrid');
+        grid.innerHTML = '';
+        
+        // Категория "Все"
+        const allCategory = createCategoryCard('all', 'Все запчасти', partsData.length, 'fas fa-boxes');
+        grid.appendChild(allCategory);
+        
+        // Остальные категории
+        categoriesData.forEach(category => {
+            const count = partsData.filter(p => p.category_id === category.id).length;
+            const card = createCategoryCard(category.id, category.name, count, category.icon);
+            grid.appendChild(card);
+        });
+        
+        // Добавляем обработчики
+        document.querySelectorAll('.category-card').forEach(card => {
+            card.addEventListener('click', () => {
+                currentCategory = card.dataset.category;
+                document.querySelectorAll('.category-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                filterParts();
+            });
+        });
+    }
+
+    function createCategoryCard(id, name, count, icon) {
+        const card = document.createElement('div');
+        card.className = `category-card ${currentCategory == id ? 'active' : ''}`;
+        card.dataset.category = id;
+        card.innerHTML = `
+            <div class="category-icon">
+                <i class="${icon}"></i>
+            </div>
+            <div class="category-info">
+                <h4>${name}</h4>
+                <p>${count} наименований</p>
+            </div>
+        `;
+        return card;
+    }
+
+    // Обновление статистики
+    async function updateStats() {
+        try {
+            const response = await fetch('/api/parts/stats/all');
+            const result = await response.json();
+            if (result.success) {
+                const stats = result.data;
+                document.getElementById('totalParts').textContent = stats.total_parts || 0;
+                document.getElementById('lowStockParts').textContent = stats.low_stock || 0;
+                document.getElementById('totalValue').textContent = `${(stats.total_value || 0).toLocaleString()} сомони`;
+                document.getElementById('totalCategories').textContent = stats.total_categories || 0;
+            }
+        } catch (error) {
+            console.error('Error loading stats:', error);
+        }
+    }
+
+    // Отрисовка таблицы запчастей
+    function renderPartsTable() {
+        const tableBody = document.getElementById('partsTableBody');
+        tableBody.innerHTML = '';
+
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const pageParts = filteredParts.slice(startIndex, endIndex);
+
+        if (pageParts.length === 0) {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="8" style="text-align: center; padding: 3rem;">
+                        <i class="fas fa-box-open" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <p>Запчасти не найдены</p>
+                    </td>
+                </tr>
+            `;
+        } else {
+            pageParts.forEach(part => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <div class="part-info">
+                            <div class="part-image">
+                                <i class="fas fa-microchip"></i>
+                            </div>
+                            <div class="part-details">
+                                <h4>${part.name}</h4>
+                                <p>${part.brand || 'Без бренда'}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${part.category_name}</td>
+                    <td><strong>${part.sku}</strong></td>
+                    <td>${part.purchase_price} сомони</td>
+                    <td><strong>${part.sale_price} сомони</strong></td>
+                    <td>${part.stock} шт.</td>
+                    <td>
+                        <span class="stock-badge stock-${part.status}">
+                            ${getStatusText(part.status)}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="action-btn edit-part-btn" data-id="${part.id}" title="Редактировать">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn delete-part-btn" data-id="${part.id}" title="Удалить">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        updatePagination();
+        attachActionListeners();
+    }
+
+    function getStatusText(status) {
+        const statusMap = {
+            'high': 'Высокий',
+            'medium': 'Средний',
+            'low': 'Низкий',
+            'out': 'Нет в наличии'
+        };
+        return statusMap[status] || status;
+    }
+
+    // Фильтрация запчастей
+    function filterParts() {
+        filteredParts = partsData.filter(part => {
+            if (currentCategory !== 'all' && part.category_id != currentCategory) {
+                return false;
+            }
+            
+            if (currentSearch) {
+                const search = currentSearch.toLowerCase();
+                return part.name.toLowerCase().includes(search) ||
+                       part.sku.toLowerCase().includes(search) ||
+                       (part.brand && part.brand.toLowerCase().includes(search));
+            }
+            
+            return true;
+        });
+        
+        currentPage = 1;
+        renderPartsTable();
+    }
+
+    // Сохранение запчасти
+    async function savePart() {
+        const form = document.getElementById('partForm');
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        const partData = {
+            name: document.getElementById('partName').value,
+            sku: document.getElementById('partSku').value,
+            brand: document.getElementById('partBrand').value || null,
+            category_id: parseInt(document.getElementById('partCategory').value),
+            purchase_price: parseFloat(document.getElementById('partPurchasePrice').value),
+            sale_price: parseFloat(document.getElementById('partSalePrice').value),
+            stock: parseInt(document.getElementById('partStock').value),
+            min_stock: parseInt(document.getElementById('partMinStock').value || 5),
+            supplier_id: document.getElementById('partSupplier').value ? 
+                        parseInt(document.getElementById('partSupplier').value) : null,
+            description: document.getElementById('partDescription').value,
+            notes: document.getElementById('partNotes').value
+        };
+
+        try {
+            let response;
+            if (isEditing && currentEditId) {
+                response = await fetch(`/api/parts/${currentEditId}`, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(partData)
+                });
+            } else {
+                response = await fetch('/api/parts', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(partData)
+                });
+            }
+
+            const result = await response.json();
+            if (result.success) {
+                alert(isEditing ? 'Запчасть обновлена' : 'Запчасть создана');
+                closeModal();
+                await loadParts();
+            } else {
+                alert(result.detail || 'Ошибка сохранения');
+            }
+        } catch (error) {
+            console.error('Error saving part:', error);
+            alert('Ошибка при сохранении');
+        }
+    }
+
+    // Удаление запчасти
+    async function deletePart(partId) {
+        if (!confirm('Удалить эту запчасть?')) return;
+
+        try {
+            const response = await fetch(`/api/parts/${partId}`, {
+                method: 'DELETE'
+            });
+            const result = await response.json();
+            
+            if (result.success) {
+                alert('Запчасть удалена');
+                await loadParts();
+            } else {
+                alert(result.detail || 'Ошибка удаления');
+            }
+        } catch (error) {
+            console.error('Error deleting part:', error);
+            alert('Ошибка при удалении');
+        }
+    }
+
+    // Остальные функции (setupEventListeners, createNewPart, editPart, closeModal и т.д.)
+    // ... (добавьте их аналогично клиентской странице)
+</script>
+   </body>
+</html>
