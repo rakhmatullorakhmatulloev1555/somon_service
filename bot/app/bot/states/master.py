@@ -9,3 +9,12 @@ class AddMaster(StatesGroup):
     specialization = State()
     experience = State()
     skills = State()
+    
+class EditMaster(StatesGroup):
+
+    name = State()
+    surname = State()
+    phone = State()
+    specialization = State()
+    experience = State()
+    skills = State()
