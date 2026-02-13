@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Center Admin | Панель управления</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+</head>
+
+<body>
+    <!-- Sidebar -->
+    {% include "admin/sidebar.html" %}
+
+    <!-- Main Content -->
+    
+    {% block content %}{% endblock %}
+    <script>
+
+        let tasks = []; // глобально
+
+        async function loadDashboard() {
+
+    const res = await fetch("/api/tickets");
+
+    const tickets = await res.json();
+
+    renderTasks(tickets);
+
+    updateStats(tickets);
+}
+
+
+function updateStats(tickets) {
+
+    let newCount = 0;
+    let repairCount = 0;
+    let doneCount = 0;
+
+    tickets.forEach(t => {
+
+        if(t.status === "Новая") newCount++;
+
+        if(t.status === "🔧 В ремонте") repairCount++;
+
+        if(t.status === "✅ Готово") doneCount++;
+
+    });
+
+    document.getElementById("stat-new").innerText = newCount;
+    document.getElementById("stat-repair").innerText = repairCount;
+    document.getElementById("stat-done").innerText = doneCount;
+}
+
+        // =======================
+        // LOAD DATA FROM API
+        // =======================
+
+        async function loadTickets() {
+
+            try {
+
+                const res = await fetch("/api/tickets");
+
+                if (!res.ok) {
+                    console.error("API error");
+                    return;
+                }
+
+                tasks = await res.json();
+
+                renderTasks(tasks);
+
+            } catch (e) {
+
+                console.error("Fetch error:", e);
+
+            }
+        }
+
+        // =======================
+        // STATUS MAP
+        // =======================
+
+        function mapStatus(status) {
+
+            if (status === "Новая") return "new";
+            if (status === "🧪 Диагностика") return "repair";
+            if (status === "🔧 В ремонте") return "repair";
+            if (status === "✅ Готово") return "done";
+
+            return "new";
+        }
+
+        // =======================
+        // RENDER BOARD
+        // =======================
+
+        function renderTasks(data) {
+
+            document.querySelectorAll('.column-content').forEach(column => {
+                column.innerHTML = "";
+            });
+
+            data.forEach(task => {
+
+                const column = mapStatus(task.status);
+
+                const columnEl = document.getElementById(column);
+
+                const el = createTaskElement({
+                    id: "SC-" + task.id,
+                    title: task.title,
+                    device: task.device || "Устройство",
+                    deviceIcon: "fas fa-laptop",
+                    client: task.client || "Клиент",
+                    clientInitials: "CL",
+                    date: task.created_at || "",
+                    priority: "medium",
+                    column: column
+                });
+
+                columnEl.appendChild(el);
+
+            });
+
+            updateColumnBadges();
+        }
+
+        // =======================
+        // CREATE CARD
+        // =======================
+
+        function createTaskElement(task) {
+
+            const taskElement = document.createElement('div');
+
+            taskElement.className = 'task-card';
+            taskElement.draggable = true;
+            taskElement.dataset.id = task.id;
+            taskElement.dataset.column = task.column;
+
+            taskElement.innerHTML = `
+        <div class="task-header">
+            <div class="task-id">${task.id}</div>
+            <div class="task-priority priority-${task.priority}">
+                Средний
+            </div>
+        </div>
+
+        <div class="task-title">${task.title}</div>
+
+        <div class="task-device">
+            <i class="${task.deviceIcon}"></i>
+            <span>${task.device}</span>
+        </div>
+
+        <div class="task-footer">
+            <div class="task-client">
+                <div class="client-avatar">${task.clientInitials}</div>
+                <div class="client-name">${task.client}</div>
+            </div>
+            <div class="task-date">${task.date}</div>
+        </div>
+    `;
+
+            taskElement.addEventListener('dragstart', handleDragStart);
+
+            return taskElement;
+        }
+
+        // =======================
+        // DRAG DROP
+        // =======================
+
+        let draggedTask = null;
+
+        function handleDragStart() {
+
+            draggedTask = this;
+            this.style.opacity = '0.5';
+
+        }
+
+        function handleDragOver(e) { e.preventDefault(); }
+
+        function handleDragEnter(e) {
+            e.preventDefault();
+            this.style.backgroundColor = 'rgba(37,99,235,0.05)';
+        }
+
+        function handleDragLeave() {
+            this.style.backgroundColor = '';
+        }
+
+        function handleDrop(e) {
+
+            e.preventDefault();
+
+            this.style.backgroundColor = '';
+
+            if (draggedTask) {
+
+                this.appendChild(draggedTask);
+
+                updateColumnBadges();
+
+            }
+        }
+
+        function handleDragEnd() {
+
+            this.style.opacity = '1';
+            draggedTask = null;
+
+        }
+
+        // =======================
+        // UPDATE COUNTERS
+        // =======================
+
+        function updateColumnBadges() {
+
+            ["new", "repair", "done"].forEach(id => {
+
+                const count = document.getElementById(id)
+                    .querySelectorAll(".task-card").length;
+
+                document.querySelector(`.column.${id} .column-badge`)
+                    .textContent = count;
+
+            });
+        }
+
+        // =======================
+        // INIT
+        // =======================
+
+       document.addEventListener("DOMContentLoaded", () => {
+
+    loadDashboard();
+
+
+
+            document.querySelectorAll('.column-content').forEach(column => {
+
+                column.addEventListener('dragover', handleDragOver);
+                column.addEventListener('dragenter', handleDragEnter);
+                column.addEventListener('dragleave', handleDragLeave);
+                column.addEventListener('drop', handleDrop);
+
+            });
+
+        });
+
+    </script>
+
+</body>
+
+</html>

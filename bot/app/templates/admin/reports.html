@@ -1,0 +1,1956 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отчеты | СомонСервис</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563EB;
+            --primary-dark: #1D4ED8;
+            --secondary-color: #10B981;
+            --secondary-dark: #059669;
+            --danger-color: #EF4444;
+            --warning-color: #F59E0B;
+            --dark-color: #111827;
+            --light-color: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-400: #9CA3AF;
+            --gray-500: #6B7280;
+            --gray-600: #4B5563;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background-color: white;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .logo i {
+            font-size: 1.75rem;
+        }
+
+        .logo span {
+            color: var(--dark-color);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 1.5rem 0;
+        }
+
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-section h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--gray-500);
+            padding: 0 1.5rem;
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1.5rem;
+            color: var(--gray-600);
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background-color: var(--gray-100);
+            color: var(--primary-color);
+        }
+
+        .nav-item.active {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+            font-size: 1.125rem;
+        }
+
+        .sidebar-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .user-info h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .user-info p {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        /* Main content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background-color: white;
+            box-shadow: var(--shadow-sm);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .header-left p {
+            color: var(--gray-500);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            width: 280px;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-btn, .settings-btn {
+            position: relative;
+            background: none;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .notification-btn:hover, .settings-btn:hover {
+            background-color: var(--gray-100);
+            color: var(--primary-color);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--danger-color);
+        }
+
+        /* Reports Page */
+        .reports-container {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            background-color: var(--gray-100);
+        }
+
+        .reports-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .reports-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .reports-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.625rem 1.25rem;
+            border-radius: var(--radius-md);
+            border: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background-color: white;
+            color: var(--gray-600);
+            border: 1px solid var(--gray-300);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--gray-100);
+            border-color: var(--gray-400);
+        }
+
+        .btn-success {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: var(--secondary-dark);
+        }
+
+        /* Date Range Picker */
+        .date-range-picker {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .date-range-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .date-range-label {
+            font-weight: 500;
+            color: var(--gray-700);
+            font-size: 0.875rem;
+        }
+
+        .date-input {
+            padding: 0.625rem 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            min-width: 150px;
+        }
+
+        .date-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .quick-dates {
+            display: flex;
+            gap: 0.5rem;
+            margin-left: auto;
+        }
+
+        .date-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--gray-300);
+            background-color: white;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .date-btn:hover {
+            background-color: var(--gray-100);
+        }
+
+        .date-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Reports Grid */
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .report-card {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .report-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-4px);
+        }
+
+        .report-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .report-icon.financial {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--secondary-color);
+        }
+
+        .report-icon.orders {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+        }
+
+        .report-icon.customers {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+        }
+
+        .report-icon.masters {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        .report-icon.parts {
+            background-color: rgba(168, 85, 247, 0.1);
+            color: #8B5CF6;
+        }
+
+        .report-icon.custom {
+            background-color: rgba(6, 182, 212, 0.1);
+            color: #06B6D4;
+        }
+
+        .report-info h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .report-info p {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .report-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .report-stats {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        .report-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--gray-300);
+            background-color: white;
+            color: var(--gray-600);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            background-color: var(--gray-100);
+            color: var(--primary-color);
+        }
+
+        /* Generated Reports */
+        .generated-reports {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-header h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .reports-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        .reports-table thead {
+            background-color: var(--gray-50);
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .reports-table th {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--gray-700);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+
+        .reports-table tbody tr {
+            border-bottom: 1px solid var(--gray-200);
+            transition: var(--transition);
+        }
+
+        .reports-table tbody tr:hover {
+            background-color: var(--gray-50);
+        }
+
+        .reports-table td {
+            padding: 1rem 1.5rem;
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+
+        .report-type {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .type-financial {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--secondary-color);
+        }
+
+        .type-orders {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+        }
+
+        .type-customers {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+        }
+
+        .report-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .status-completed {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--secondary-color);
+        }
+
+        .status-processing {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+        }
+
+        .status-failed {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        .report-size {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .pagination-info {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+        }
+
+        .pagination-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .page-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--gray-300);
+            background-color: white;
+            color: var(--gray-700);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .page-btn:hover {
+            background-color: var(--gray-100);
+        }
+
+        .page-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .page-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray-500);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--danger-color);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            font-size: 0.875rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .reports-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -260px;
+                top: 0;
+                bottom: 0;
+            }
+            
+            .sidebar.active {
+                left: 0;
+            }
+            
+            .reports-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+            }
+            
+            .reports-controls {
+                justify-content: space-between;
+            }
+            
+            .date-range-picker {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .date-range-group {
+                flex-direction: column;
+                align-items: stretch;
+                width: 100%;
+            }
+            
+            .quick-dates {
+                margin-left: 0;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .header {
+                padding: 1rem;
+            }
+            
+            .search-box input {
+                width: 200px;
+            }
+            
+            .reports-container {
+                padding: 1rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .reports-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .search-box input {
+                width: 150px;
+            }
+            
+            .header-right {
+                gap: 1rem;
+            }
+            
+            .reports-controls {
+                flex-wrap: wrap;
+            }
+            
+            .quick-dates {
+                justify-content: stretch;
+            }
+            
+            .date-btn {
+                flex: 1;
+                text-align: center;
+            }
+            
+            .report-footer {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+            }
+            
+            .report-actions {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+   {% include "admin/sidebar.html" %}
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1>Отчеты</h1>
+                <p>Генерация и управление аналитическими отчетами</p>
+            </div>
+            
+            <div class="header-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Поиск отчетов...">
+                </div>
+                
+                <div class="header-actions">
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge"></span>
+                    </button>
+                    <button class="settings-btn">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Reports Content -->
+        <div class="reports-container">
+            <div class="reports-header">
+                <h2>Аналитические отчеты</h2>
+                <div class="reports-controls">
+                    <button class="btn btn-outline" id="templatesBtn">
+                        <i class="fas fa-file-alt"></i>
+                        Шаблоны
+                    </button>
+                    <button class="btn btn-primary" id="customReportBtn">
+                        <i class="fas fa-plus"></i>
+                        Создать отчет
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Date Range Picker -->
+            <div class="date-range-picker">
+                <div class="date-range-group">
+                    <span class="date-range-label">Период отчета:</span>
+                    <input type="date" id="startDate" class="date-input" value="2024-01-01">
+                    <span>—</span>
+                    <input type="date" id="endDate" class="date-input" value="2024-01-31">
+                </div>
+                <div class="quick-dates">
+                    <button class="date-btn active" data-days="7">Неделя</button>
+                    <button class="date-btn" data-days="30">Месяц</button>
+                    <button class="date-btn" data-days="90">Квартал</button>
+                    <button class="date-btn" data-period="year">Год</button>
+                </div>
+            </div>
+            
+            <!-- Reports Grid -->
+            <div class="reports-grid">
+                <div class="report-card">
+                    <div class="report-icon financial">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="report-info">
+                        <h3>Финансовый отчет</h3>
+                        <p>Детальный отчет о доходах, расходах и прибыли за выбранный период. Включает анализ по категориям и тренды.</p>
+                    </div>
+                    <div class="report-footer">
+                        <div class="report-stats">
+                            <i class="fas fa-clock"></i> Генерация: 2 мин
+                        </div>
+                        <div class="report-actions">
+                            <button class="action-btn view-btn" data-report="financial" title="Просмотр">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn generate-btn" data-report="financial" title="Сгенерировать">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <button class="action-btn export-btn" data-report="financial" title="Экспорт">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="report-card">
+                    <div class="report-icon orders">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <div class="report-info">
+                        <h3>Отчет по заявкам</h3>
+                        <p>Статистика по заявкам: количество, статусы, среднее время выполнения, анализ эффективности мастеров.</p>
+                    </div>
+                    <div class="report-footer">
+                        <div class="report-stats">
+                            <i class="fas fa-clock"></i> Генерация: 1 мин
+                        </div>
+                        <div class="report-actions">
+                            <button class="action-btn view-btn" data-report="orders" title="Просмотр">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn generate-btn" data-report="orders" title="Сгенерировать">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <button class="action-btn export-btn" data-report="orders" title="Экспорт">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="report-card">
+                    <div class="report-icon customers">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="report-info">
+                        <h3>Отчет по клиентам</h3>
+                        <p>Анализ клиентской базы: новые клиенты, лояльность, средний чек, популярные услуги, отток клиентов.</p>
+                    </div>
+                    <div class="report-footer">
+                        <div class="report-stats">
+                            <i class="fas fa-clock"></i> Генерация: 3 мин
+                        </div>
+                        <div class="report-actions">
+                            <button class="action-btn view-btn" data-report="customers" title="Просмотр">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn generate-btn" data-report="customers" title="Сгенерировать">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <button class="action-btn export-btn" data-report="customers" title="Экспорт">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="report-card">
+                    <div class="report-icon masters">
+                        <i class="fas fa-user-cog"></i>
+                    </div>
+                    <div class="report-info">
+                        <h3>Отчет по мастерам</h3>
+                        <p>Эффективность работы мастеров: количество заявок, рейтинг, загрузка, качество работы, анализ прибыльности.</p>
+                    </div>
+                    <div class="report-footer">
+                        <div class="report-stats">
+                            <i class="fas fa-clock"></i> Генерация: 2 мин
+                        </div>
+                        <div class="report-actions">
+                            <button class="action-btn view-btn" data-report="masters" title="Просмотр">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn generate-btn" data-report="masters" title="Сгенерировать">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <button class="action-btn export-btn" data-report="masters" title="Экспорт">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="report-card">
+                    <div class="report-icon parts">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="report-info">
+                        <h3>Отчет по запчастям</h3>
+                        <p>Анализ движения запчастей: оборачиваемость, остатки, популярные позиции, затраты на закупку, рентабельность.</p>
+                    </div>
+                    <div class="report-footer">
+                        <div class="report-stats">
+                            <i class="fas fa-clock"></i> Генерация: 4 мин
+                        </div>
+                        <div class="report-actions">
+                            <button class="action-btn view-btn" data-report="parts" title="Просмотр">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn generate-btn" data-report="parts" title="Сгенерировать">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <button class="action-btn export-btn" data-report="parts" title="Экспорт">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="report-card">
+                    <div class="report-icon custom">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <div class="report-info">
+                        <h3>Пользовательский отчет</h3>
+                        <p>Создайте собственный отчет с нужными параметрами, фильтрами и метриками. Настройте под свои нужды.</p>
+                    </div>
+                    <div class="report-footer">
+                        <div class="report-stats">
+                            <i class="fas fa-sliders-h"></i> Настраиваемый
+                        </div>
+                        <div class="report-actions">
+                            <button class="action-btn create-btn" data-report="custom" title="Создать">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                            <button class="action-btn settings-btn" data-report="custom" title="Настройки">
+                                <i class="fas fa-cog"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Generated Reports -->
+            <div class="generated-reports">
+                <div class="section-header">
+                    <h3>Сгенерированные отчеты</h3>
+                    <button class="btn btn-outline" id="refreshBtn">
+                        <i class="fas fa-redo"></i>
+                        Обновить
+                    </button>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="reports-table" id="reportsTable">
+                        <thead>
+                            <tr>
+                                <th>Название</th>
+                                <th>Тип</th>
+                                <th>Период</th>
+                                <th>Дата создания</th>
+                                <th>Статус</th>
+                                <th>Размер</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reportsTableBody">
+                            <!-- Reports will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="pagination">
+                    <div class="pagination-info" id="paginationInfo">
+                        Показано 1-10 из 24 отчетов
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="page-btn disabled" id="prevPageBtn">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn" id="nextPageBtn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Report Modal -->
+    <div class="modal" id="reportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Создание отчета</h3>
+                <button class="modal-close" id="closeModalBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="reportForm">
+                    <div class="form-group">
+                        <label for="reportName">Название отчета *</label>
+                        <input type="text" id="reportName" class="form-control" required placeholder="Финансовый отчет за январь 2024">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reportType">Тип отчета *</label>
+                        <select id="reportType" class="form-control" required>
+                            <option value="">Выберите тип</option>
+                            <option value="financial">Финансовый</option>
+                            <option value="orders">По заявкам</option>
+                            <option value="customers">По клиентам</option>
+                            <option value="masters">По мастерам</option>
+                            <option value="parts">По запчастям</option>
+                            <option value="custom">Пользовательский</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reportStartDate">Дата начала *</label>
+                            <input type="date" id="reportStartDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reportEndDate">Дата окончания *</label>
+                            <input type="date" id="reportEndDate" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reportFormat">Формат экспорта</label>
+                        <div class="form-actions">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="radio" name="format" value="pdf" checked>
+                                <span>PDF</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="radio" name="format" value="excel">
+                                <span>Excel</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="radio" name="format" value="csv">
+                                <span>CSV</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Параметры отчета</label>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="checkbox" id="includeCharts" checked>
+                                <span>Включить графики и диаграммы</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="checkbox" id="includeDetails" checked>
+                                <span>Включить детализированные данные</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="checkbox" id="includeSummary">
+                                <span>Включить сводку и выводы</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="checkbox" id="sendEmail">
+                                <span>Отправить на email после генерации</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reportEmail">Email для отправки</label>
+                        <input type="email" id="reportEmail" class="form-control" placeholder="admin@somonservice.tj">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="reportNotes">Примечания</label>
+                        <textarea id="reportNotes" class="form-control" rows="3" placeholder="Дополнительные инструкции или комментарии"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelBtn">
+                    Отмена
+                </button>
+                <button class="btn btn-primary" id="generateReportBtn">
+                    Сгенерировать отчет
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Sample data for generated reports
+        const generatedReports = [
+            {
+                id: 1,
+                name: "Финансовый отчет за январь 2024",
+                type: "financial",
+                typeName: "Финансовый",
+                startDate: "2024-01-01",
+                endDate: "2024-01-31",
+                createdDate: "2024-01-31 18:30",
+                status: "completed",
+                statusName: "Завершен",
+                size: "2.4 MB",
+                format: "PDF",
+                url: "#"
+            },
+            {
+                id: 2,
+                name: "Отчет по заявкам за неделю",
+                type: "orders",
+                typeName: "По заявкам",
+                startDate: "2024-01-22",
+                endDate: "2024-01-28",
+                createdDate: "2024-01-28 17:45",
+                status: "completed",
+                statusName: "Завершен",
+                size: "1.1 MB",
+                format: "Excel",
+                url: "#"
+            },
+            {
+                id: 3,
+                name: "Анализ клиентской базы 2023",
+                type: "customers",
+                typeName: "По клиентам",
+                startDate: "2023-01-01",
+                endDate: "2023-12-31",
+                createdDate: "2024-01-15 10:20",
+                status: "completed",
+                statusName: "Завершен",
+                size: "3.8 MB",
+                format: "PDF",
+                url: "#"
+            },
+            {
+                id: 4,
+                name: "Эффективность мастеров за декабрь",
+                type: "masters",
+                typeName: "По мастерам",
+                startDate: "2023-12-01",
+                endDate: "2023-12-31",
+                createdDate: "2024-01-05 14:15",
+                status: "completed",
+                statusName: "Завершен",
+                size: "1.9 MB",
+                format: "PDF",
+                url: "#"
+            },
+            {
+                id: 5,
+                name: "Движение запчастей - январь",
+                type: "parts",
+                typeName: "По запчастям",
+                startDate: "2024-01-01",
+                endDate: "2024-01-31",
+                createdDate: "2024-02-01 09:30",
+                status: "processing",
+                statusName: "В процессе",
+                size: "-",
+                format: "CSV",
+                url: "#"
+            },
+            {
+                id: 6,
+                name: "Пользовательский отчет по продажам",
+                type: "custom",
+                typeName: "Пользовательский",
+                startDate: "2024-01-01",
+                endDate: "2024-01-15",
+                createdDate: "2024-01-16 11:45",
+                status: "failed",
+                statusName: "Ошибка",
+                size: "-",
+                format: "Excel",
+                url: "#"
+            },
+            {
+                id: 7,
+                name: "Еженедельный финансовый отчет",
+                type: "financial",
+                typeName: "Финансовый",
+                startDate: "2024-01-29",
+                endDate: "2024-02-04",
+                createdDate: "2024-02-04 19:00",
+                status: "completed",
+                statusName: "Завершен",
+                size: "1.2 MB",
+                format: "PDF",
+                url: "#"
+            },
+            {
+                id: 8,
+                name: "Анализ новых клиентов",
+                type: "customers",
+                typeName: "По клиентам",
+                startDate: "2024-01-01",
+                endDate: "2024-01-31",
+                createdDate: "2024-02-01 16:20",
+                status: "completed",
+                statusName: "Завершен",
+                size: "0.8 MB",
+                format: "Excel",
+                url: "#"
+            }
+        ];
+
+        // Current state
+        let currentPage = 1;
+        const itemsPerPage = 6;
+        let filteredReports = [...generatedReports];
+        let currentSearch = "";
+        let isGenerating = false;
+        let generationInterval = null;
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderReportsTable();
+            setupEventListeners();
+            setDefaultDateRange();
+        });
+
+        // Set default date range (current month)
+        function setDefaultDateRange() {
+            const today = new Date();
+            const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+            const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            
+            document.getElementById('startDate').value = formatDateForInput(firstDay);
+            document.getElementById('endDate').value = formatDateForInput(lastDay);
+            
+            // Also set in modal
+            document.getElementById('reportStartDate').value = formatDateForInput(firstDay);
+            document.getElementById('reportEndDate').value = formatDateForInput(lastDay);
+        }
+
+        // Render reports table
+        function renderReportsTable() {
+            const tableBody = document.getElementById('reportsTableBody');
+            tableBody.innerHTML = '';
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageReports = filteredReports.slice(startIndex, endIndex);
+
+            if (pageReports.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 3rem; color: var(--gray-500);">
+                            <i class="fas fa-file-alt" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+                            <p>Отчеты не найдены</p>
+                            <p style="font-size: 0.875rem; margin-top: 0.5rem;">Сгенерируйте новый отчет</p>
+                        </td>
+                    </tr>
+                `;
+            } else {
+                pageReports.forEach(report => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>
+                            <div style="font-weight: 500;">${report.name}</div>
+                            <div style="font-size: 0.75rem; color: var(--gray-500);">${report.format}</div>
+                        </td>
+                        <td>
+                            <span class="report-type type-${report.type}">
+                                ${report.typeName}
+                            </span>
+                        </td>
+                        <td>
+                            <div>${formatDate(report.startDate)}</div>
+                            <div style="font-size: 0.75rem; color: var(--gray-500);">${formatDate(report.endDate)}</div>
+                        </td>
+                        <td>${report.createdDate}</td>
+                        <td>
+                            <span class="report-status status-${report.status}">
+                                ${report.statusName}
+                            </span>
+                        </td>
+                        <td class="report-size">${report.size}</td>
+                        <td>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="action-btn view-report-btn" data-id="${report.id}" title="Просмотр" ${report.status !== 'completed' ? 'disabled' : ''}>
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn download-report-btn" data-id="${report.id}" title="Скачать" ${report.status !== 'completed' ? 'disabled' : ''}>
+                                    <i class="fas fa-download"></i>
+                                </button>
+                                <button class="action-btn delete-report-btn" data-id="${report.id}" title="Удалить">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+
+            // Update pagination info
+            const totalReports = filteredReports.length;
+            const startReport = totalReports > 0 ? startIndex + 1 : 0;
+            const endReport = Math.min(endIndex, totalReports);
+            document.getElementById('paginationInfo').textContent = 
+                `Показано ${startReport}-${endReport} из ${totalReports} отчетов`;
+
+            // Update pagination buttons
+            updatePaginationButtons(totalReports);
+
+            // Add event listeners to action buttons
+            document.querySelectorAll('.view-report-btn:not([disabled])').forEach(btn => {
+                btn.addEventListener('click', () => viewReport(btn.dataset.id));
+            });
+
+            document.querySelectorAll('.download-report-btn:not([disabled])').forEach(btn => {
+                btn.addEventListener('click', () => downloadReport(btn.dataset.id));
+            });
+
+            document.querySelectorAll('.delete-report-btn').forEach(btn => {
+                btn.addEventListener('click', () => deleteReport(btn.dataset.id));
+            });
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Search input
+            document.getElementById('searchInput').addEventListener('input', function(e) {
+                currentSearch = e.target.value.toLowerCase();
+                filterReports();
+            });
+            
+            // Date range buttons
+            document.querySelectorAll('.date-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const days = this.dataset.days;
+                    const period = this.dataset.period;
+                    
+                    if (days) {
+                        setDateRangeDays(parseInt(days));
+                    } else if (period === 'year') {
+                        setCurrentYear();
+                    }
+                });
+            });
+            
+            // Date inputs
+            document.getElementById('startDate').addEventListener('change', updateReports);
+            document.getElementById('endDate').addEventListener('change', updateReports);
+            
+            // Report card buttons
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', () => previewReport(btn.dataset.report));
+            });
+            
+            document.querySelectorAll('.generate-btn').forEach(btn => {
+                btn.addEventListener('click', () => generateQuickReport(btn.dataset.report));
+            });
+            
+            document.querySelectorAll('.export-btn').forEach(btn => {
+                btn.addEventListener('click', () => exportReport(btn.dataset.report));
+            });
+            
+            document.querySelectorAll('.create-btn').forEach(btn => {
+                btn.addEventListener('click', () => createCustomReport());
+            });
+            
+            // Templates button
+            document.getElementById('templatesBtn').addEventListener('click', showTemplates);
+            
+            // Custom report button
+            document.getElementById('customReportBtn').addEventListener('click', createCustomReport);
+            
+            // Refresh button
+            document.getElementById('refreshBtn').addEventListener('click', refreshReports);
+            
+            // Modal buttons
+            document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+            document.getElementById('cancelBtn').addEventListener('click', closeModal);
+            document.getElementById('generateReportBtn').addEventListener('click', generateReport);
+            
+            // Pagination buttons
+            document.getElementById('prevPageBtn').addEventListener('click', goToPrevPage);
+            document.getElementById('nextPageBtn').addEventListener('click', goToNextPage);
+            
+            // Close modal on outside click
+            document.getElementById('reportModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+        }
+
+        // Filter reports
+        function filterReports() {
+            if (!currentSearch.trim()) {
+                filteredReports = [...generatedReports];
+            } else {
+                filteredReports = generatedReports.filter(report => {
+                    return (
+                        report.name.toLowerCase().includes(currentSearch) ||
+                        report.typeName.toLowerCase().includes(currentSearch) ||
+                        report.format.toLowerCase().includes(currentSearch)
+                    );
+                });
+            }
+            
+            currentPage = 1;
+            renderReportsTable();
+        }
+
+        // Set date range for N days
+        function setDateRangeDays(days) {
+            const endDate = new Date();
+            const startDate = new Date();
+            startDate.setDate(startDate.getDate() - days + 1);
+            
+            document.getElementById('startDate').value = formatDateForInput(startDate);
+            document.getElementById('endDate').value = formatDateForInput(endDate);
+            
+            updateReports();
+        }
+
+        // Set date range for current year
+        function setCurrentYear() {
+            const today = new Date();
+            const firstDay = new Date(today.getFullYear(), 0, 1);
+            const lastDay = new Date(today.getFullYear(), 11, 31);
+            
+            document.getElementById('startDate').value = formatDateForInput(firstDay);
+            document.getElementById('endDate').value = formatDateForInput(lastDay);
+            
+            updateReports();
+        }
+
+        // Update reports based on date range
+        function updateReports() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            
+            console.log(`Filtering reports for period: ${startDate} to ${endDate}`);
+            // In a real app, you would filter reports by date range
+        }
+
+        // Preview report
+        function previewReport(reportType) {
+            const reportTypes = {
+                financial: "Финансовый отчет",
+                orders: "Отчет по заявкам",
+                customers: "Отчет по клиентам",
+                masters: "Отчет по мастерам",
+                parts: "Отчет по запчастям",
+                custom: "Пользовательский отчет"
+            };
+            
+            alert(`Предпросмотр отчета: ${reportTypes[reportType]}\nПериод: ${document.getElementById('startDate').value} - ${document.getElementById('endDate').value}`);
+        }
+
+        // Generate quick report
+        function generateQuickReport(reportType) {
+            const reportTypes = {
+                financial: "Финансовый отчет",
+                orders: "Отчет по заявкам",
+                customers: "Отчет по клиентам",
+                masters: "Отчет по мастерам",
+                parts: "Отчет по запчастям"
+            };
+            
+            const reportName = `${reportTypes[reportType]} за период`;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            
+            // Show generating indicator
+            isGenerating = true;
+            showGeneratingIndicator(reportName);
+            
+            // Simulate report generation
+            setTimeout(() => {
+                isGenerating = false;
+                if (generationInterval) {
+                    clearInterval(generationInterval);
+                    generationInterval = null;
+                }
+                
+                // Add new report to list
+                const newId = Math.max(...generatedReports.map(r => r.id)) + 1;
+                const newReport = {
+                    id: newId,
+                    name: `${reportTypes[reportType]} ${formatDate(startDate)} - ${formatDate(endDate)}`,
+                    type: reportType,
+                    typeName: reportTypes[reportType],
+                    startDate: startDate,
+                    endDate: endDate,
+                    createdDate: new Date().toLocaleString('ru-RU'),
+                    status: "completed",
+                    statusName: "Завершен",
+                    size: getRandomSize(),
+                    format: "PDF",
+                    url: "#"
+                };
+                
+                generatedReports.unshift(newReport);
+                filterReports();
+                
+                alert(`Отчет "${newReport.name}" успешно сгенерирован!`);
+            }, 2000);
+        }
+
+        // Show generating indicator
+        function showGeneratingIndicator(reportName) {
+            let progress = 0;
+            
+            const indicator = document.createElement('div');
+            indicator.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: white;
+                padding: 1rem;
+                border-radius: var(--radius-lg);
+                box-shadow: var(--shadow-xl);
+                z-index: 1001;
+                min-width: 300px;
+            `;
+            
+            indicator.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                    <div class="spinner" style="width: 20px; height: 20px; border: 2px solid var(--gray-300); border-top-color: var(--primary-color); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                    <div style="font-weight: 500;">Генерация отчета</div>
+                </div>
+                <div style="font-size: 0.875rem; color: var(--gray-600); margin-bottom: 0.5rem;">${reportName}</div>
+                <div style="height: 4px; background-color: var(--gray-200); border-radius: 2px; overflow: hidden;">
+                    <div id="generatingProgress" style="height: 100%; background-color: var(--primary-color); width: ${progress}%; transition: width 0.3s ease;"></div>
+                </div>
+                <div style="font-size: 0.75rem; color: var(--gray-500); text-align: right; margin-top: 0.25rem;" id="generatingStatus">Инициализация...</div>
+            `;
+            
+            document.body.appendChild(indicator);
+            
+            // Update progress
+            generationInterval = setInterval(() => {
+                if (progress < 90) {
+                    progress += Math.random() * 15;
+                    if (progress > 90) progress = 90;
+                    
+                    document.getElementById('generatingProgress').style.width = progress + '%';
+                    
+                    const statuses = [
+                        "Сбор данных...",
+                        "Анализ информации...",
+                        "Формирование графиков...",
+                        "Создание документа...",
+                        "Финальная обработка..."
+                    ];
+                    
+                    const statusIndex = Math.floor(progress / 18);
+                    document.getElementById('generatingStatus').textContent = statuses[statusIndex] || "Завершение...";
+                }
+            }, 500);
+            
+            // Add CSS for spinner animation
+            if (!document.querySelector('#spinnerStyles')) {
+                const style = document.createElement('style');
+                style.id = 'spinnerStyles';
+                style.textContent = `
+                    @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            // Remove indicator when done
+            setTimeout(() => {
+                if (indicator.parentNode) {
+                    indicator.remove();
+                }
+            }, 2500);
+        }
+
+        // Export report
+        function exportReport(reportType) {
+            const reportTypes = {
+                financial: "Финансовый отчет",
+                orders: "Отчет по заявкам",
+                customers: "Отчет по клиентам",
+                masters: "Отчет по мастерам",
+                parts: "Отчет по запчастям"
+            };
+            
+            alert(`Экспорт отчета: ${reportTypes[reportType]} в выбранном формате`);
+        }
+
+        // Create custom report
+        function createCustomReport() {
+            // Reset form
+            document.getElementById('reportForm').reset();
+            document.getElementById('modalTitle').textContent = 'Создание отчета';
+            document.getElementById('generateReportBtn').textContent = 'Сгенерировать отчет';
+            
+            // Set default dates
+            setDefaultDateRange();
+            
+            // Show modal
+            document.getElementById('reportModal').classList.add('active');
+        }
+
+        // Show templates
+        function showTemplates() {
+            alert('Просмотр шаблонов отчетов');
+        }
+
+        // Refresh reports
+        function refreshReports() {
+            alert('Обновление списка отчетов');
+            // In a real app, you would fetch fresh data from server
+        }
+
+        // Generate report from modal
+        function generateReport() {
+            const form = document.getElementById('reportForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            const reportData = {
+                name: document.getElementById('reportName').value.trim(),
+                type: document.getElementById('reportType').value,
+                startDate: document.getElementById('reportStartDate').value,
+                endDate: document.getElementById('reportEndDate').value,
+                format: document.querySelector('input[name="format"]:checked').value,
+                includeCharts: document.getElementById('includeCharts').checked,
+                includeDetails: document.getElementById('includeDetails').checked,
+                includeSummary: document.getElementById('includeSummary').checked,
+                sendEmail: document.getElementById('sendEmail').checked,
+                email: document.getElementById('reportEmail').value.trim(),
+                notes: document.getElementById('reportNotes').value.trim()
+            };
+            
+            // Get type name
+            const typeSelect = document.getElementById('reportType');
+            const typeName = typeSelect.options[typeSelect.selectedIndex].text;
+            
+            // Show generating indicator
+            isGenerating = true;
+            showGeneratingIndicator(reportData.name);
+            
+            // Simulate report generation
+            setTimeout(() => {
+                isGenerating = false;
+                if (generationInterval) {
+                    clearInterval(generationInterval);
+                    generationInterval = null;
+                }
+                
+                // Add new report to list
+                const newId = Math.max(...generatedReports.map(r => r.id)) + 1;
+                const newReport = {
+                    id: newId,
+                    name: reportData.name,
+                    type: reportData.type,
+                    typeName: typeName,
+                    startDate: reportData.startDate,
+                    endDate: reportData.endDate,
+                    createdDate: new Date().toLocaleString('ru-RU'),
+                    status: "completed",
+                    statusName: "Завершен",
+                    size: getRandomSize(),
+                    format: reportData.format.toUpperCase(),
+                    url: "#"
+                };
+                
+                generatedReports.unshift(newReport);
+                filterReports();
+                
+                if (reportData.sendEmail && reportData.email) {
+                    alert(`Отчет "${reportData.name}" успешно сгенерирован и отправлен на ${reportData.email}!`);
+                } else {
+                    alert(`Отчет "${reportData.name}" успешно сгенерирован!`);
+                }
+                
+                closeModal();
+            }, 3000);
+        }
+
+        // View report
+        function viewReport(reportId) {
+            const report = generatedReports.find(r => r.id == reportId);
+            if (!report) return;
+            
+            alert(`Просмотр отчета: ${report.name}\nТип: ${report.typeName}\nПериод: ${formatDate(report.startDate)} - ${formatDate(report.endDate)}\nФормат: ${report.format}\nРазмер: ${report.size}`);
+        }
+
+        // Download report
+        function downloadReport(reportId) {
+            const report = generatedReports.find(r => r.id == reportId);
+            if (!report) return;
+            
+            alert(`Скачивание отчета: ${report.name}\nФормат: ${report.format}\nРазмер: ${report.size}`);
+        }
+
+        // Delete report
+        function deleteReport(reportId) {
+            const report = generatedReports.find(r => r.id == reportId);
+            if (!report) return;
+            
+            if (confirm(`Вы уверены, что хотите удалить отчет "${report.name}"?`)) {
+                const index = generatedReports.findIndex(r => r.id == reportId);
+                if (index !== -1) {
+                    generatedReports.splice(index, 1);
+                    alert(`Отчет "${report.name}" удален`);
+                    filterReports();
+                }
+            }
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('reportModal').classList.remove('active');
+            document.getElementById('reportForm').reset();
+        }
+
+        // Update pagination buttons
+        function updatePaginationButtons(totalReports) {
+            const totalPages = Math.ceil(totalReports / itemsPerPage);
+            const paginationControls = document.querySelector('.pagination-controls');
+            
+            // Clear existing page number buttons (keep prev/next)
+            const prevBtn = document.getElementById('prevPageBtn');
+            const nextBtn = document.getElementById('nextPageBtn');
+            paginationControls.innerHTML = '';
+            paginationControls.appendChild(prevBtn);
+            
+            // Create page number buttons
+            for (let i = 1; i <= totalPages; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+                pageBtn.textContent = i;
+                pageBtn.addEventListener('click', () => {
+                    currentPage = i;
+                    renderReportsTable();
+                });
+                paginationControls.appendChild(pageBtn);
+            }
+            
+            paginationControls.appendChild(nextBtn);
+            
+            // Update prev/next button states
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.classList.toggle('disabled', currentPage === 1);
+            
+            nextBtn.disabled = currentPage === totalPages || totalPages === 0;
+            nextBtn.classList.toggle('disabled', currentPage === totalPages || totalPages === 0);
+        }
+
+        // Go to previous page
+        function goToPrevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                renderReportsTable();
+            }
+        }
+
+        // Go to next page
+        function goToNextPage() {
+            const totalPages = Math.ceil(filteredReports.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderReportsTable();
+            }
+        }
+
+        // Helper functions
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ru-RU');
+        }
+
+        function formatDateForInput(date) {
+            return date.toISOString().split('T')[0];
+        }
+
+        function getRandomSize() {
+            const sizes = ['0.5 MB', '1.2 MB', '2.4 MB', '3.8 MB', '0.8 MB', '1.9 MB'];
+            return sizes[Math.floor(Math.random() * sizes.length)];
+        }
+    </script>
+</body>
+</html>

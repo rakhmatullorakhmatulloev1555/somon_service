@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поставщики | СомонСервис</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563EB;
+            --primary-dark: #1D4ED8;
+            --secondary-color: #10B981;
+            --secondary-dark: #059669;
+            --danger-color: #EF4444;
+            --warning-color: #F59E0B;
+            --dark-color: #111827;
+            --light-color: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-400: #9CA3AF;
+            --gray-500: #6B7280;
+            --gray-600: #4B5563;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background-color: white;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .logo i {
+            font-size: 1.75rem;
+        }
+
+        .logo span {
+            color: var(--dark-color);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 1.5rem 0;
+        }
+
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-section h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--gray-500);
+            padding: 0 1.5rem;
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1.5rem;
+            color: var(--gray-600);
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background-color: var(--gray-100);
+            color: var(--primary-color);
+        }
+
+        .nav-item.active {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+            font-size: 1.125rem;
+        }
+
+        .sidebar-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .user-info h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .user-info p {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        /* Main content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background-color: white;
+            box-shadow: var(--shadow-sm);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .header-left p {
+            color: var(--gray-500);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            width: 280px;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-btn, .settings-btn {
+            position: relative;
+            background: none;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .notification-btn:hover, .settings-btn:hover {
+            background-color: var(--gray-100);
+            color: var(--primary-color);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--danger-color);
+        }
+
+        /* Suppliers Page */
+        .suppliers-container {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            background-color: var(--gray-100);
+        }
+
+        .suppliers-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .suppliers-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .btn {
+            padding: 0.625rem 1.25rem;
+            border-radius: var(--radius-md);
+            border: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background-color: white;
+            color: var(--gray-600);
+            border: 1px solid var(--gray-300);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--gray-100);
+            border-color: var(--gray-400);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #DC2626;
+        }
+
+        /* Suppliers Grid */
+        .suppliers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .supplier-card {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            border: 1px solid var(--gray-200);
+        }
+
+        .supplier-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+            border-color: var(--primary-color);
+        }
+
+        .supplier-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .supplier-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .supplier-title h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--dark-color);
+        }
+
+        .supplier-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .supplier-status.active {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--secondary-color);
+        }
+
+        .supplier-status.inactive {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        .supplier-details {
+            margin-bottom: 1.25rem;
+        }
+
+        .supplier-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            color: var(--gray-600);
+            font-size: 0.875rem;
+        }
+
+        .supplier-detail-item i {
+            width: 20px;
+            text-align: center;
+            color: var(--primary-color);
+        }
+
+        .supplier-stats {
+            display: flex;
+            gap: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray-200);
+            margin-bottom: 1.25rem;
+            font-size: 0.875rem;
+        }
+
+        .supplier-stats span {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: var(--gray-600);
+        }
+
+        .supplier-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--gray-300);
+            background-color: white;
+            color: var(--gray-600);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            background-color: var(--gray-100);
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .action-btn.delete:hover {
+            background-color: var(--danger-color);
+            color: white;
+            border-color: var(--danger-color);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray-500);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--danger-color);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            font-size: 0.875rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background-color: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: var(--gray-400);
+            margin-bottom: 1.5rem;
+        }
+
+        .empty-state h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            color: var(--gray-500);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -260px;
+                top: 0;
+                bottom: 0;
+            }
+            
+            .sidebar.active {
+                left: 0;
+            }
+            
+            .suppliers-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+            }
+            
+            .header {
+                padding: 1rem;
+            }
+            
+            .search-box input {
+                width: 200px;
+            }
+            
+            .suppliers-container {
+                padding: 1rem;
+            }
+            
+            .suppliers-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .search-box input {
+                width: 150px;
+            }
+            
+            .header-right {
+                gap: 1rem;
+            }
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(37, 99, 235, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-4 {
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    {% include "admin/sidebar.html" %}
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1>Поставщики</h1>
+                <p>Управление поставщиками запчастей и комплектующих</p>
+            </div>
+            
+            <div class="header-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Поиск по названию...">
+                </div>
+                
+                <div class="header-actions">
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge"></span>
+                    </button>
+                    <button class="settings-btn">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Suppliers Content -->
+        <div class="suppliers-container">
+            <div class="suppliers-header">
+                <h2>Все поставщики</h2>
+                <button class="btn btn-primary" id="addSupplierBtn">
+                    <i class="fas fa-plus"></i>
+                    Новый поставщик
+                </button>
+            </div>
+            
+            <!-- Loading Spinner -->
+            <div id="loadingSpinner" class="text-center mt-4">
+                <div class="spinner"></div>
+                <p style="margin-top: 1rem; color: var(--gray-600);">Загрузка поставщиков...</p>
+            </div>
+            
+            <!-- Suppliers Grid -->
+            <div id="suppliersGrid" class="suppliers-grid" style="display: none;"></div>
+            
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <i class="fas fa-truck"></i>
+                <h3>Нет поставщиков</h3>
+                <p>В системе еще нет поставщиков запчастей.<br>Добавьте первого поставщика!</p>
+                <button class="btn btn-primary" onclick="openAddSupplierModal()">
+                    <i class="fas fa-plus"></i>
+                    Добавить поставщика
+                </button>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Supplier Modal -->
+    <div class="modal" id="supplierModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Новый поставщик</h3>
+                <button class="modal-close" id="closeModalBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="supplierForm">
+                    <div class="form-group">
+                        <label for="supplierName">Название компании *</label>
+                        <input type="text" id="supplierName" class="form-control" required placeholder="TechParts Ltd.">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="supplierContact">Контактное лицо</label>
+                            <input type="text" id="supplierContact" class="form-control" placeholder="Иван Петров">
+                        </div>
+                        <div class="form-group">
+                            <label for="supplierPhone">Телефон</label>
+                            <input type="text" id="supplierPhone" class="form-control" placeholder="+992 900 123 456">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="supplierEmail">Email</label>
+                            <input type="email" id="supplierEmail" class="form-control" placeholder="info@techparts.tj">
+                        </div>
+                        <div class="form-group">
+                            <label for="supplierStatus">Статус</label>
+                            <select id="supplierStatus" class="form-control">
+                                <option value="active">Активный</option>
+                                <option value="inactive">Неактивный</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="supplierAddress">Адрес</label>
+                        <textarea id="supplierAddress" class="form-control" rows="2" placeholder="г. Душанбе, ул. Айни 123"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="supplierNotes">Примечания</label>
+                        <textarea id="supplierNotes" class="form-control" rows="3" placeholder="Дополнительная информация о поставщике"></textarea>
+                    </div>
+                    
+                    <input type="hidden" id="supplierId" value="">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelBtn">
+                    Отмена
+                </button>
+                <button class="btn btn-primary" id="saveSupplierBtn">
+                    Сохранить
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Удаление поставщика</h3>
+                <button class="modal-close" id="closeDeleteModalBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 1rem;">Вы уверены, что хотите удалить поставщика?</p>
+                <p id="deleteSupplierName" style="font-weight: 600; color: var(--danger-color);"></p>
+                <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--gray-600);">
+                    ⚠️ Поставщика можно удалить только если у него нет связанных запчастей.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelDeleteBtn">
+                    Отмена
+                </button>
+                <button class="btn btn-danger" id="confirmDeleteBtn">
+                    Удалить
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Глобальные переменные
+        let suppliers = [];
+        let currentSupplierId = null;
+        let isEditing = false;
+        
+        // Загрузка поставщиков при открытии страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSuppliers();
+            setupEventListeners();
+        });
+        
+        // Загрузка поставщиков из API
+        async function loadSuppliers() {
+            showLoading(true);
+            
+            try {
+                const response = await fetch('/api/parts/suppliers/all');
+                const result = await response.json();
+                
+                if (result.success) {
+                    suppliers = result.data;
+                    renderSuppliers();
+                } else {
+                    showError('Ошибка загрузки поставщиков');
+                }
+            } catch (error) {
+                console.error('Error loading suppliers:', error);
+                showError('Ошибка соединения с сервером');
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        // Отрисовка поставщиков
+        function renderSuppliers() {
+            const grid = document.getElementById('suppliersGrid');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (suppliers.length === 0) {
+                grid.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            grid.style.display = 'grid';
+            emptyState.style.display = 'none';
+            
+            grid.innerHTML = '';
+            
+            // Фильтрация по поиску
+            let filteredSuppliers = suppliers;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            if (searchTerm) {
+                filteredSuppliers = suppliers.filter(sup => 
+                    sup.name.toLowerCase().includes(searchTerm) ||
+                    (sup.contact_person && sup.contact_person.toLowerCase().includes(searchTerm)) ||
+                    (sup.phone && sup.phone.includes(searchTerm)) ||
+                    (sup.email && sup.email.toLowerCase().includes(searchTerm))
+                );
+            }
+            
+            filteredSuppliers.forEach(supplier => {
+                const card = createSupplierCard(supplier);
+                grid.appendChild(card);
+            });
+        }
+        
+        // Создание карточки поставщика
+        function createSupplierCard(supplier) {
+            const card = document.createElement('div');
+            card.className = 'supplier-card';
+            card.dataset.id = supplier.id;
+            
+            card.innerHTML = `
+                <div class="supplier-header">
+                    <div class="supplier-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <div class="supplier-title">
+                        <h3>${supplier.name}</h3>
+                        <span class="supplier-status ${supplier.is_active ? 'active' : 'inactive'}">
+                            ${supplier.is_active ? 'Активный' : 'Неактивный'}
+                        </span>
+                    </div>
+                </div>
+                <div class="supplier-details">
+                    ${supplier.contact_person ? `
+                        <div class="supplier-detail-item">
+                            <i class="fas fa-user"></i>
+                            <span>${supplier.contact_person}</span>
+                        </div>
+                    ` : ''}
+                    ${supplier.phone ? `
+                        <div class="supplier-detail-item">
+                            <i class="fas fa-phone"></i>
+                            <span>${supplier.phone}</span>
+                        </div>
+                    ` : ''}
+                    ${supplier.email ? `
+                        <div class="supplier-detail-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>${supplier.email}</span>
+                        </div>
+                    ` : ''}
+                    ${supplier.address ? `
+                        <div class="supplier-detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${supplier.address}</span>
+                        </div>
+                    ` : ''}
+                    ${supplier.notes ? `
+                        <div class="supplier-detail-item">
+                            <i class="fas fa-sticky-note"></i>
+                            <span>${supplier.notes}</span>
+                        </div>
+                    ` : ''}
+                </div>
+                <div class="supplier-stats">
+                    <span title="Количество запчастей">
+                        <i class="fas fa-box"></i>
+                        ${supplier.parts_count || 0} запчастей
+                    </span>
+                </div>
+                <div class="supplier-actions">
+                    <button class="action-btn" onclick="editSupplier(${supplier.id})" title="Редактировать">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="action-btn ${supplier.parts_count === 0 ? 'delete' : ''}" 
+                            onclick="deleteSupplier(${supplier.id}, '${supplier.name}')" 
+                            title="${supplier.parts_count === 0 ? 'Удалить' : 'Нельзя удалить (есть запчасти)'}"
+                            ${supplier.parts_count > 0 ? 'disabled' : ''}>
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+            
+            return card;
+        }
+        
+        // Открыть модалку добавления поставщика
+        function openAddSupplierModal() {
+            isEditing = false;
+            currentSupplierId = null;
+            
+            document.getElementById('modalTitle').textContent = 'Новый поставщик';
+            document.getElementById('supplierId').value = '';
+            document.getElementById('supplierName').value = '';
+            document.getElementById('supplierContact').value = '';
+            document.getElementById('supplierPhone').value = '';
+            document.getElementById('supplierEmail').value = '';
+            document.getElementById('supplierAddress').value = '';
+            document.getElementById('supplierNotes').value = '';
+            document.getElementById('supplierStatus').value = 'active';
+            
+            document.getElementById('supplierModal').classList.add('active');
+        }
+        
+        // Редактирование поставщика
+        async function editSupplier(supplierId) {
+            const supplier = suppliers.find(s => s.id === supplierId);
+            if (!supplier) return;
+            
+            isEditing = true;
+            currentSupplierId = supplierId;
+            
+            document.getElementById('modalTitle').textContent = 'Редактирование поставщика';
+            document.getElementById('supplierId').value = supplier.id;
+            document.getElementById('supplierName').value = supplier.name;
+            document.getElementById('supplierContact').value = supplier.contact_person || '';
+            document.getElementById('supplierPhone').value = supplier.phone || '';
+            document.getElementById('supplierEmail').value = supplier.email || '';
+            document.getElementById('supplierAddress').value = supplier.address || '';
+            document.getElementById('supplierNotes').value = supplier.notes || '';
+            document.getElementById('supplierStatus').value = supplier.is_active ? 'active' : 'inactive';
+            
+            document.getElementById('supplierModal').classList.add('active');
+        }
+        
+        // Сохранение поставщика
+        async function saveSupplier() {
+            const name = document.getElementById('supplierName').value.trim();
+            if (!name) {
+                alert('Введите название компании');
+                return;
+            }
+            
+            const supplierData = {
+                name: name,
+                contact_person: document.getElementById('supplierContact').value.trim() || null,
+                phone: document.getElementById('supplierPhone').value.trim() || null,
+                email: document.getElementById('supplierEmail').value.trim() || null,
+                address: document.getElementById('supplierAddress').value.trim() || null,
+                notes: document.getElementById('supplierNotes').value.trim() || null,
+                is_active: document.getElementById('supplierStatus').value === 'active'
+            };
+            
+            try {
+                let response;
+                if (isEditing && currentSupplierId) {
+                    response = await fetch(`/api/parts/suppliers/${currentSupplierId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(supplierData)
+                    });
+                } else {
+                    response = await fetch('/api/parts/suppliers', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(supplierData)
+                    });
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    closeModal();
+                    await loadSuppliers();
+                    showSuccess(isEditing ? 'Поставщик обновлен' : 'Поставщик создан');
+                } else {
+                    alert(result.detail || 'Ошибка сохранения');
+                }
+            } catch (error) {
+                console.error('Error saving supplier:', error);
+                alert('Ошибка при сохранении');
+            }
+        }
+        
+        // Удаление поставщика
+        async function deleteSupplier(supplierId, supplierName) {
+            const supplier = suppliers.find(s => s.id === supplierId);
+            if (supplier.parts_count > 0) {
+                alert('Нельзя удалить поставщика, у которого есть запчасти');
+                return;
+            }
+            
+            document.getElementById('deleteSupplierName').textContent = supplierName;
+            document.getElementById('deleteModal').classList.add('active');
+            
+            // Обработчик подтверждения удаления
+            const confirmBtn = document.getElementById('confirmDeleteBtn');
+            const newConfirmBtn = confirmBtn.cloneNode(true);
+            confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+            
+            newConfirmBtn.addEventListener('click', async function() {
+                try {
+                    const response = await fetch(`/api/parts/suppliers/${supplierId}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        closeDeleteModal();
+                        await loadSuppliers();
+                        showSuccess('Поставщик удален');
+                    } else {
+                        alert(result.detail || 'Ошибка удаления');
+                    }
+                } catch (error) {
+                    console.error('Error deleting supplier:', error);
+                    alert('Ошибка при удалении');
+                }
+            });
+        }
+        
+        // Поиск
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            let searchTimeout;
+            
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    renderSuppliers();
+                }, 300);
+            });
+        }
+        
+        // Настройка обработчиков событий
+        function setupEventListeners() {
+            // Добавление поставщика
+            document.getElementById('addSupplierBtn').addEventListener('click', openAddSupplierModal);
+            
+            // Сохранение поставщика
+            document.getElementById('saveSupplierBtn').addEventListener('click', saveSupplier);
+            
+            // Закрытие модалок
+            document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+            document.getElementById('cancelBtn').addEventListener('click', closeModal);
+            document.getElementById('closeDeleteModalBtn').addEventListener('click', closeDeleteModal);
+            document.getElementById('cancelDeleteBtn').addEventListener('click', closeDeleteModal);
+            
+            // Закрытие по клику вне модалки
+            document.getElementById('supplierModal').addEventListener('click', function(e) {
+                if (e.target === this) closeModal();
+            });
+            
+            document.getElementById('deleteModal').addEventListener('click', function(e) {
+                if (e.target === this) closeDeleteModal();
+            });
+            
+            // Поиск
+            setupSearch();
+        }
+        
+        // Закрытие модалки поставщика
+        function closeModal() {
+            document.getElementById('supplierModal').classList.remove('active');
+            document.getElementById('supplierForm').reset();
+        }
+        
+        // Закрытие модалки удаления
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('active');
+        }
+        
+        // Показать/скрыть загрузку
+        function showLoading(show) {
+            const spinner = document.getElementById('loadingSpinner');
+            const grid = document.getElementById('suppliersGrid');
+            const emptyState = document.getElementById('emptyState');
+            
+            spinner.style.display = show ? 'block' : 'none';
+            if (!show) {
+                if (suppliers.length > 0) {
+                    grid.style.display = 'grid';
+                } else {
+                    emptyState.style.display = 'block';
+                }
+            }
+        }
+        
+        // Показать ошибку
+        function showError(message) {
+            console.error(message);
+        }
+        
+        // Показать успех
+        function showSuccess(message) {
+            console.log(message);
+        }
+    </script>
+</body>
+</html>

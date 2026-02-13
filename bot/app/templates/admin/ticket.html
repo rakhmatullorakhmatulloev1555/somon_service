@@ -1,0 +1,23 @@
+<html>
+<head>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="p-8">
+
+<h1>Заявка #{{ ticket.id }}</h1>
+
+<p>{{ ticket.problem }}</p>
+
+<form method="post" action="/admin/status/{{ ticket.id }}">
+
+<button name="status" value="🧪 Диагностика">Диагностика</button>
+
+<button name="status" value="🔧 В ремонте">Ремонт</button>
+
+<button name="status" value="✅ Готово">Готово</button>
+
+</form>
+
+</body>
+</html>

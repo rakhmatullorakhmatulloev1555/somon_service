@@ -1,0 +1,237 @@
+<div class="analytics-page">
+    <!-- Period Selector -->
+    <div class="analytics-header">
+        <div class="period-selector">
+            <button class="btn btn-outline" id="periodToday">Сегодня</button>
+            <button class="btn btn-outline" id="periodWeek">Неделя</button>
+            <button class="btn btn-outline active" id="periodMonth">Месяц</button>
+            <button class="btn btn-outline" id="periodQuarter">Квартал</button>
+            <button class="btn btn-outline" id="periodYear">Год</button>
+            <div class="date-range">
+                <input type="date" id="dateFrom" class="date-input">
+                <span>по</span>
+                <input type="date" id="dateTo" class="date-input">
+                <button class="btn btn-primary" id="applyDateRange">
+                    <i class="fas fa-check"></i>
+                </button>
+            </div>
+        </div>
+        <button class="btn btn-outline" id="exportAnalyticsBtn">
+            <i class="fas fa-download"></i>
+            Экспорт отчета
+        </button>
+    </div>
+    
+    <!-- Key Metrics -->
+    <div class="stats-cards">
+        <div class="stat-card">
+            <div class="stat-header">
+                <div>
+                    <div class="stat-title">Выручка</div>
+                    <div class="stat-value" id="revenueValue">0 ₽</div>
+                    <div class="stat-change positive" id="revenueChange">+0%</div>
+                </div>
+                <div class="stat-icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stat-card repair">
+            <div class="stat-header">
+                <div>
+                    <div class="stat-title">Завершено заявок</div>
+                    <div class="stat-value" id="completedOrdersCount">0</div>
+                    <div class="stat-change positive" id="ordersChange">+0%</div>
+                </div>
+                <div class="stat-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stat-card done">
+            <div class="stat-header">
+                <div>
+                    <div class="stat-title">Средний чек</div>
+                    <div class="stat-value" id="averageOrderValue">0 ₽</div>
+                    <div class="stat-change positive" id="averageOrderChange">+0%</div>
+                </div>
+                <div class="stat-icon">
+                    <i class="fas fa-receipt"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stat-card cancelled">
+            <div class="stat-header">
+                <div>
+                    <div class="stat-title">Новых клиентов</div>
+                    <div class="stat-value" id="newClientsCount">0</div>
+                    <div class="stat-change positive" id="clientsChange">+0%</div>
+                </div>
+                <div class="stat-icon">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Charts Row 1 -->
+    <div class="charts-row">
+        <div class="chart-container">
+            <div class="chart-header">
+                <h2 class="chart-title">Выручка по дням</h2>
+                <select class="filter-select" id="revenueChartType">
+                    <option value="line">Линейный график</option>
+                    <option value="bar">Столбчатая диаграмма</option>
+                </select>
+            </div>
+            <div class="chart" id="revenueChart">
+                <canvas id="revenueChartCanvas"></canvas>
+            </div>
+        </div>
+        
+        <div class="chart-container">
+            <div class="chart-header">
+                <h2 class="chart-title">Распределение заявок</h2>
+            </div>
+            <div class="chart" id="ordersDistributionChart">
+                <canvas id="ordersDistributionCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Charts Row 2 -->
+    <div class="charts-row">
+        <div class="chart-container">
+            <div class="chart-header">
+                <h2 class="chart-title">Топ услуг</h2>
+                <select class="filter-select" id="topServicesCount">
+                    <option value="5">Топ 5</option>
+                    <option value="10" selected>Топ 10</option>
+                    <option value="15">Топ 15</option>
+                </select>
+            </div>
+            <div class="chart" id="topServicesChart">
+                <canvas id="topServicesCanvas"></canvas>
+            </div>
+        </div>
+        
+        <div class="chart-container">
+            <div class="chart-header">
+                <h2 class="chart-title">Загрузка мастеров</h2>
+            </div>
+            <div class="chart" id="mastersWorkloadChart">
+                <canvas id="mastersWorkloadCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Detailed Reports -->
+    <div class="table-container">
+        <div class="board-header">
+            <h2 class="board-title">Детальная статистика</h2>
+            <div class="tabs" id="analyticsTabs">
+                <button class="tab-btn active" data-tab="orders">По заявкам</button>
+                <button class="tab-btn" data-tab="clients">По клиентам</button>
+                <button class="tab-btn" data-tab="masters">По мастерам</button>
+                <button class="tab-btn" data-tab="services">По услугам</button>
+            </div>
+        </div>
+        
+        <div class="tab-content active" id="ordersTab">
+            <div class="table-responsive">
+                <table class="table" id="analyticsOrdersTable">
+                    <thead>
+                        <tr>
+                            <th>Дата</th>
+                            <th>Новых заявок</th>
+                            <th>В работе</th>
+                            <th>Завершено</th>
+                            <th>Отменено</th>
+                            <th>Среднее время</th>
+                            <th>Выручка</th>
+                            <th>Конверсия</th>
+                        </tr>
+                    </thead>
+                    <tbody id="analyticsOrdersTableBody">
+                        <!-- Analytics data loaded dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="clientsTab">
+            <div class="table-responsive">
+                <table class="table" id="analyticsClientsTable">
+                    <thead>
+                        <tr>
+                            <th>Клиент</th>
+                            <th>Заявок</th>
+                            <th>Выручка</th>
+                            <th>Средний чек</th>
+                            <th>Первый заказ</th>
+                            <th>Последний заказ</th>
+                            <th>Частота</th>
+                            <th>LTV</th>
+                        </tr>
+                    </thead>
+                    <tbody id="analyticsClientsTableBody">
+                        <!-- Clients analytics loaded dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="mastersTab">
+            <div class="table-responsive">
+                <table class="table" id="analyticsMastersTable">
+                    <thead>
+                        <tr>
+                            <th>Мастер</th>
+                            <th>Завершено заявок</th>
+                            <th>Выручка</th>
+                            <th>Среднее время</th>
+                            <th>Рейтинг</th>
+                            <th>Загрузка</th>
+                            <th>Эффективность</th>
+                            <th>Премия</th>
+                        </tr>
+                    </thead>
+                    <tbody id="analyticsMastersTableBody">
+                        <!-- Masters analytics loaded dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="servicesTab">
+            <div class="table-responsive">
+                <table class="table" id="analyticsServicesTable">
+                    <thead>
+                        <tr>
+                            <th>Услуга</th>
+                            <th>Количество</th>
+                            <th>Выручка</th>
+                            <th>Средняя цена</th>
+                            <th>Популярность</th>
+                            <th>Сезонность</th>
+                            <th>Маржинальность</th>
+                            <th>Тренд</th>
+                        </tr>
+                    </thead>
+                    <tbody id="analyticsServicesTableBody">
+                        <!-- Services analytics loaded dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="pagination" id="analyticsPagination">
+            <!-- Pagination loaded dynamically -->
+        </div>
+    </div>
+</div>
+
+<script src="js/analytics.js"></script>

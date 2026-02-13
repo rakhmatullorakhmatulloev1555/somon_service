@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Быстрая заявка | СомонСервис</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background: #2563EB;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #1D4ED8;
+        }
+        .success {
+            background: #10B981;
+            color: white;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🏪 Быстрая заявка (клиент в сервисе)</h1>
+    
+    <form id="walkinForm">
+        <div class="form-group">
+            <label>👤 Имя клиента *</label>
+            <input type="text" id="clientName" required>
+        </div>
+        
+        <div class="form-group">
+            <label>📞 Телефон клиента *</label>
+            <input type="tel" id="clientPhone" required placeholder="+992 123 45 67 89">
+        </div>
+        
+        <div class="form-group">
+            <label>📍 Филиал *</label>
+            <select id="branch" required>
+                <option value="">Выберите филиал</option>
+                <option value="🏢 Душанбе">🏢 Душанбе</option>
+                <option value="🏢 Худжанд">🏢 Худжанд</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>📂 Категория *</label>
+            <select id="category" required>
+                <option value="">Выберите категорию</option>
+                <option value="📱 Телефоны">📱 Телефоны</option>
+                <option value="💻 Ноутбуки">💻 Ноутбуки</option>
+                <option value="🖥 Компьютеры">🖥 Компьютеры</option>
+                <option value="⌚️ Умные часы">⌚️ Умные часы</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>🏷 Бренд *</label>
+            <input type="text" id="brand" required placeholder="Apple, Samsung, Xiaomi...">
+        </div>
+        
+        <div class="form-group">
+            <label>🛠 Описание проблемы *</label>
+            <textarea id="problem" rows="3" required placeholder="Не включается, разбит экран, не работает камера..."></textarea>
+        </div>
+        
+        <button type="submit">✅ Создать заявку</button>
+    </form>
+    
+    <div id="successMessage" class="success" style="display: none;">
+        <h3>✅ Заявка создана!</h3>
+        <p id="ticketInfo"></p>
+    </div>
+    
+    <script>
+        document.getElementById('walkinForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                client_name: document.getElementById('clientName').value,
+                client_phone: document.getElementById('clientPhone').value,
+                branch: document.getElementById('branch').value,
+                category: document.getElementById('category').value,
+                brand: document.getElementById('brand').value,
+                problem: document.getElementById('problem').value
+            };
+            
+            try {
+                const response = await fetch('/api/walkin-tickets', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    document.getElementById('walkinForm').style.display = 'none';
+                    document.getElementById('successMessage').style.display = 'block';
+                    document.getElementById('ticketInfo').textContent = 
+                        `Номер заявки: #${result.ticket_id}`;
+                    
+                    // Через 3 секунды очищаем форму
+                    setTimeout(() => {
+                        document.getElementById('walkinForm').reset();
+                        document.getElementById('walkinForm').style.display = 'block';
+                        document.getElementById('successMessage').style.display = 'none';
+                    }, 3000);
+                } else {
+                    alert('Ошибка: ' + result.message);
+                }
+            } catch (error) {
+                alert('Ошибка при создании заявки');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Клиенты | СомонСервис</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563EB;
+            --primary-dark: #1D4ED8;
+            --secondary-color: #10B981;
+            --secondary-dark: #059669;
+            --danger-color: #EF4444;
+            --warning-color: #F59E0B;
+            --dark-color: #111827;
+            --light-color: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-400: #9CA3AF;
+            --gray-500: #6B7280;
+            --gray-600: #4B5563;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background-color: white;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .logo i {
+            font-size: 1.75rem;
+        }
+
+        .logo span {
+            color: var(--dark-color);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 1.5rem 0;
+        }
+
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-section h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--gray-500);
+            padding: 0 1.5rem;
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1.5rem;
+            color: var(--gray-600);
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background-color: var(--gray-100);
+            color: var(--primary-color);
+        }
+
+        .nav-item.active {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+            font-size: 1.125rem;
+        }
+
+        .sidebar-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .user-info h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .user-info p {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        /* Main content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background-color: white;
+            box-shadow: var(--shadow-sm);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .header-left p {
+            color: var(--gray-500);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            width: 280px;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-btn, .settings-btn {
+            position: relative;
+            background: none;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .notification-btn:hover, .settings-btn:hover {
+            background-color: var(--gray-100);
+            color: var(--primary-color);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--danger-color);
+        }
+
+        /* Customers Page */
+        .customers-container {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            background-color: var(--gray-100);
+        }
+
+        .customers-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .customers-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .customers-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.625rem 1.25rem;
+            border-radius: var(--radius-md);
+            border: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background-color: white;
+            color: var(--gray-600);
+            border: 1px solid var(--gray-300);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--gray-100);
+            border-color: var(--gray-400);
+        }
+
+        .btn-success {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: var(--secondary-dark);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .stat-info h3 {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .stat-info .value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            line-height: 1;
+        }
+
+        .stat-info .change {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .stat-info .change.positive {
+            color: var(--secondary-color);
+        }
+
+        .stat-info .change.negative {
+            color: var(--danger-color);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+        }
+
+        .stat-icon.new {
+            background-color: rgba(139, 92, 246, 0.1);
+            color: #8B5CF6;
+        }
+
+        .stat-icon.active {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--secondary-color);
+        }
+
+        .stat-icon.loyal {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+        }
+
+        /* Customers Table */
+        .customers-table-container {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .customers-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+
+        .customers-table thead {
+            background-color: var(--gray-50);
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .customers-table th {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--gray-700);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+
+        .customers-table tbody tr {
+            border-bottom: 1px solid var(--gray-200);
+            transition: var(--transition);
+        }
+
+        .customers-table tbody tr:hover {
+            background-color: var(--gray-50);
+        }
+
+        .customers-table td {
+            padding: 1rem 1.5rem;
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+
+        .customer-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .customer-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .customer-details h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .customer-details p {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .status-active {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--secondary-color);
+        }
+
+        .status-inactive {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        .loyalty-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .loyalty-high {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+        }
+
+        .loyalty-medium {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+        }
+
+        .loyalty-low {
+            background-color: rgba(156, 163, 175, 0.1);
+            color: var(--gray-500);
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--gray-300);
+            background-color: white;
+            color: var(--gray-600);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            background-color: var(--gray-100);
+            color: var(--primary-color);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .pagination-info {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+        }
+
+        .pagination-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .page-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--gray-300);
+            background-color: white;
+            color: var(--gray-700);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .page-btn:hover {
+            background-color: var(--gray-100);
+        }
+
+        .page-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .page-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray-500);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--danger-color);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            font-size: 0.875rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -260px;
+                top: 0;
+                bottom: 0;
+            }
+            
+            .sidebar.active {
+                left: 0;
+            }
+            
+            .customers-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+            }
+            
+            .customers-controls {
+                justify-content: space-between;
+            }
+            
+            .header {
+                padding: 1rem;
+            }
+            
+            .search-box input {
+                width: 200px;
+            }
+            
+            .customers-container {
+                padding: 1rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .search-box input {
+                width: 150px;
+            }
+            
+            .header-right {
+                gap: 1rem;
+            }
+            
+            .customers-controls {
+                flex-wrap: wrap;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+     {% include "admin/sidebar.html" %}
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1>Клиенты</h1>
+                <p>Управление клиентской базой сервисного центра</p>
+            </div>
+            
+            <div class="header-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Поиск по имени, телефону...">
+                </div>
+                
+                <div class="header-actions">
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge"></span>
+                    </button>
+                    <button class="settings-btn">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Customers Content -->
+        <div class="customers-container">
+            <div class="customers-header">
+                <h2>Клиентская база</h2>
+                <div class="customers-controls">
+                    <button class="btn btn-outline" id="exportBtn">
+                        <i class="fas fa-file-export"></i>
+                        Экспорт
+                    </button>
+                    <button class="btn btn-primary" id="newCustomerBtn">
+                        <i class="fas fa-plus"></i>
+                        Новый клиент
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Всего клиентов</h3>
+                        <div class="value" id="totalCustomers">0</div>
+                        <div class="change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>Загрузка...</span>
+                        </div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Новых (30 дней)</h3>
+                        <div class="value" id="newCustomers">0</div>
+                        <div class="change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>Загрузка...</span>
+                        </div>
+                    </div>
+                    <div class="stat-icon new">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Активных</h3>
+                        <div class="value" id="activeCustomers">0</div>
+                        <div class="change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>Загрузка...</span>
+                        </div>
+                    </div>
+                    <div class="stat-icon active">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Постоянных</h3>
+                        <div class="value" id="loyalCustomers">0</div>
+                        <div class="change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>Загрузка...</span>
+                        </div>
+                    </div>
+                    <div class="stat-icon loyal">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Customers Table -->
+            <div class="customers-table-container">
+                <div class="table-responsive">
+                    <table class="customers-table" id="customersTable">
+                        <thead>
+                            <tr>
+                                <th>Клиент</th>
+                                <th>Контакты</th>
+                                <th>Заявок</th>
+                                <th>Последняя заявка</th>
+                                <th>Статус</th>
+                                <th>Лояльность</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customersTableBody">
+                            <tr>
+                                <td colspan="7" style="text-align: center; padding: 3rem;">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Загрузка...</span>
+                                    </div>
+                                    <p style="margin-top: 1rem;">Загрузка данных...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="pagination">
+                    <div class="pagination-info" id="paginationInfo">
+                        Загрузка...
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="page-btn disabled" id="prevPageBtn">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn" id="nextPageBtn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Customer Modal -->
+    <div class="modal" id="customerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Новый клиент</h3>
+                <button class="modal-close" id="closeModalBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="customerForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="customerName">Имя *</label>
+                            <input type="text" id="customerName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerSurname">Фамилия *</label>
+                            <input type="text" id="customerSurname" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customerPhone">Телефон *</label>
+                            <input type="tel" id="customerPhone" class="form-control" required placeholder="+992 __ ___ __ __">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customerTelegram">Telegram</label>
+                        <input type="text" id="customerTelegram" class="form-control" placeholder="@username">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customerAddress">Адрес</label>
+                        <textarea id="customerAddress" class="form-control" rows="2" placeholder="г. Душанбе, ул. Примерная 123"></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="customerStatus">Статус</label>
+                            <select id="customerStatus" class="form-control">
+                                <option value="active">Активный</option>
+                                <option value="inactive">Неактивный</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="customerLoyalty">Уровень лояльности</label>
+                            <select id="customerLoyalty" class="form-control">
+                                <option value="high">Высокий</option>
+                                <option value="medium" selected>Средний</option>
+                                <option value="low">Низкий</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customerNotes">Примечания</label>
+                        <textarea id="customerNotes" class="form-control" rows="3" placeholder="Дополнительная информация о клиенте"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelBtn">
+                    Отмена
+                </button>
+                <button class="btn btn-primary" id="saveCustomerBtn">
+                    Сохранить
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Глобальные переменные для управления состоянием
+        let customersData = [];
+        let filteredCustomers = [];
+        let currentPage = 1;
+        const itemsPerPage = 10;
+        let currentSearch = "";
+        let isEditing = false;
+        let currentEditId = null;
+
+        // Основная функция загрузки клиентов
+        async function loadClients() {
+            try {
+                console.log("Загрузка клиентов...");
+                const res = await fetch("/api/admin/clients");
+                
+                if (!res.ok) {
+                    throw new Error(`Ошибка HTTP: ${res.status}`);
+                }
+                
+                const response = await res.json();
+                console.log("Ответ API:", response);
+                
+                // Проверяем структуру ответа
+                let clients = [];
+                if (response.success && response.data) {
+                    clients = response.data;
+                } else if (Array.isArray(response)) {
+                    clients = response;
+                } else {
+                    console.error("Неожиданный формат данных:", response);
+                    return;
+                }
+                
+                // Преобразуем данные в нужный формат
+                customersData = clients.map((client, index) => {
+                    const nameParts = client.name ? client.name.split(" ") : ["Клиент"];
+                    const firstName = nameParts[0] || "Клиент";
+                    const lastName = nameParts.slice(1).join(" ") || "";
+                    
+                    return {
+                        id: client.id || index + 1,
+                        name: firstName,
+                        surname: lastName,
+                        fullName: client.name || "Неизвестный клиент",
+                        phone: client.phone || client.client_phone || "Не указан",
+                        telegram: client.telegram_id ? "@" + client.telegram_id : client.telegram_id || "",
+                        username: client.username || "",
+                        ordersCount: client.ticket_count || client.orders || 0,
+                        lastOrder: client.last_order || "-",
+                        status: "active", // Все клиенты считаем активными
+                        loyalty: client.loyalty || "medium",
+                        avatarColor: getRandomColor(),
+                        address: client.address || "",
+                        notes: client.notes || "",
+                        totalSpent: client.total_spent || "0"
+                    };
+                });
+                
+                console.log("Загружено клиентов:", customersData.length);
+                
+                // Обновляем UI
+                updateStats();
+                filterCustomers();
+                renderCustomersTable();
+                
+            } catch (error) {
+                console.error("Ошибка при загрузке клиентов:", error);
+                
+                // Показываем сообщение об ошибке
+                const tableBody = document.getElementById('customersTableBody');
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 3rem; color: var(--danger-color);">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+                            <p>Ошибка загрузки данных</p>
+                            <p style="font-size: 0.875rem; margin-top: 0.5rem;">${error.message}</p>
+                            <button class="btn btn-primary" onclick="loadClients()" style="margin-top: 1rem;">
+                                <i class="fas fa-redo"></i> Попробовать снова
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Обновление статистики
+        function updateStats() {
+            const total = customersData.length;
+            const active = customersData.filter(c => c.status === 'active').length;
+            const loyal = customersData.filter(c => c.loyalty === 'high').length;
+            
+            // Для новых клиентов считаем тех, кто создан в последние 30 дней
+            const monthAgo = new Date();
+            monthAgo.setMonth(monthAgo.getMonth() - 1);
+            const newCustomers = customersData.filter(c => {
+                // Если нет даты, считаем всех активными
+                return c.status === 'active';
+            }).length;
+            
+            document.getElementById('totalCustomers').textContent = total;
+            document.getElementById('newCustomers').textContent = newCustomers;
+            document.getElementById('activeCustomers').textContent = active;
+            document.getElementById('loyalCustomers').textContent = loyal;
+        }
+
+        // Фильтрация клиентов
+        function filterCustomers() {
+            if (!currentSearch.trim()) {
+                filteredCustomers = [...customersData];
+            } else {
+                const searchTerm = currentSearch.toLowerCase();
+                filteredCustomers = customersData.filter(customer => {
+                    return (
+                        customer.fullName.toLowerCase().includes(searchTerm) ||
+                        (customer.phone && customer.phone.toLowerCase().includes(searchTerm)) ||
+                        (customer.telegram && customer.telegram.toLowerCase().includes(searchTerm)) ||
+                        (customer.address && customer.address.toLowerCase().includes(searchTerm)) ||
+                        (customer.username && customer.username.toLowerCase().includes(searchTerm))
+                    );
+                });
+            }
+            
+            currentPage = 1;
+            renderCustomersTable();
+        }
+
+        // Отрисовка таблицы
+        function renderCustomersTable() {
+            const tableBody = document.getElementById('customersTableBody');
+            
+            if (filteredCustomers.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 3rem; color: var(--gray-500);">
+                            <i class="fas fa-user-slash" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+                            <p>Клиенты не найдены</p>
+                            <p style="font-size: 0.875rem; margin-top: 0.5rem;">${currentSearch ? 'Попробуйте изменить параметры поиска' : 'Нет данных для отображения'}</p>
+                        </td>
+                    </tr>
+                `;
+            } else {
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+                const pageCustomers = filteredCustomers.slice(startIndex, endIndex);
+                
+                tableBody.innerHTML = '';
+                
+                pageCustomers.forEach(customer => {
+                    const initials = `${customer.name[0] || ''}${customer.surname[0] || ''}`.toUpperCase() || '??';
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>
+                            <div class="customer-info">
+                                <div class="customer-avatar" style="background: ${customer.avatarColor}">
+                                    ${initials}
+                                </div>
+                                <div class="customer-details">
+                                    <h4>${customer.fullName}</h4>
+                                    <p>ID: C-${customer.id.toString().padStart(3, '0')}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="margin-bottom: 0.25rem;"><strong>${customer.phone}</strong></div>
+                            ${customer.telegram ? `<div style="font-size: 0.75rem; color: var(--gray-500);">${customer.telegram}</div>` : ''}
+                            ${customer.username ? `<div style="font-size: 0.75rem; color: var(--gray-500);">${customer.username}</div>` : ''}
+                        </td>
+                        <td>
+                            <strong>${customer.ordersCount}</strong>
+                            <div style="font-size: 0.75rem; color: var(--gray-500);">${customer.totalSpent} сомони</div>
+                        </td>
+                        <td>${customer.lastOrder}</td>
+                        <td><span class="status-badge status-${customer.status}">${customer.status === 'active' ? 'Активный' : 'Неактивный'}</span></td>
+                        <td><span class="loyalty-badge loyalty-${customer.loyalty}">${customer.loyalty === 'high' ? 'Высокий' : customer.loyalty === 'medium' ? 'Средний' : 'Низкий'}</span></td>
+                        <td>
+                            <div class="table-actions">
+                                <button class="action-btn view-customer-btn" data-id="${customer.id}" title="Просмотр">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn edit-customer-btn" data-id="${customer.id}" title="Редактировать">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn delete-customer-btn" data-id="${customer.id}" title="Удалить">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+                
+                // Обновляем информацию о пагинации
+                updatePaginationInfo();
+                
+                // Добавляем обработчики событий для кнопок
+                addTableEventListeners();
+            }
+        }
+
+        // Обновление информации о пагинации
+        function updatePaginationInfo() {
+            const totalCustomers = filteredCustomers.length;
+            const startCustomer = totalCustomers > 0 ? ((currentPage - 1) * itemsPerPage) + 1 : 0;
+            const endCustomer = Math.min(currentPage * itemsPerPage, totalCustomers);
+            
+            document.getElementById('paginationInfo').textContent = 
+                totalCustomers > 0 ? 
+                `Показано ${startCustomer}-${endCustomer} из ${totalCustomers} клиентов` :
+                "Нет данных для отображения";
+            
+            updatePaginationButtons(totalCustomers);
+        }
+
+        // Обновление кнопок пагинации
+        function updatePaginationButtons(totalCustomers) {
+            const totalPages = Math.ceil(totalCustomers / itemsPerPage);
+            const paginationControls = document.querySelector('.pagination-controls');
+            
+            // Очищаем существующие кнопки (кроме prev/next)
+            const prevBtn = document.getElementById('prevPageBtn');
+            const nextBtn = document.getElementById('nextPageBtn');
+            
+            // Создаем новый контейнер
+            const newControls = document.createElement('div');
+            newControls.className = 'pagination-controls';
+            
+            // Добавляем кнопку "Назад"
+            const prevClone = prevBtn.cloneNode(true);
+            prevClone.disabled = currentPage === 1;
+            prevClone.classList.toggle('disabled', currentPage === 1);
+            newControls.appendChild(prevClone);
+            
+            // Создаем кнопки с номерами страниц
+            for (let i = 1; i <= totalPages; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+                pageBtn.textContent = i;
+                pageBtn.addEventListener('click', () => {
+                    currentPage = i;
+                    renderCustomersTable();
+                });
+                newControls.appendChild(pageBtn);
+            }
+            
+            // Добавляем кнопку "Вперед"
+            const nextClone = nextBtn.cloneNode(true);
+            nextClone.disabled = currentPage === totalPages || totalPages === 0;
+            nextClone.classList.toggle('disabled', currentPage === totalPages || totalPages === 0);
+            newControls.appendChild(nextClone);
+            
+            // Заменяем старые кнопки новыми
+            paginationControls.parentNode.replaceChild(newControls, paginationControls);
+            
+            // Добавляем обработчики событий для новых кнопок
+            document.getElementById('prevPageBtn').addEventListener('click', goToPrevPage);
+            document.getElementById('nextPageBtn').addEventListener('click', goToNextPage);
+        }
+
+        // Переход на предыдущую страницу
+        function goToPrevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                renderCustomersTable();
+            }
+        }
+
+        // Переход на следующую страницу
+        function goToNextPage() {
+            const totalPages = Math.ceil(filteredCustomers.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderCustomersTable();
+            }
+        }
+
+        // Добавление обработчиков событий для таблицы
+        function addTableEventListeners() {
+            document.querySelectorAll('.view-customer-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const customerId = btn.dataset.id;
+                    viewCustomer(customerId);
+                });
+            });
+
+            document.querySelectorAll('.edit-customer-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const customerId = btn.dataset.id;
+                    editCustomer(customerId);
+                });
+            });
+
+            document.querySelectorAll('.delete-customer-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const customerId = btn.dataset.id;
+                    deleteCustomer(customerId);
+                });
+            });
+        }
+
+        // Просмотр клиента
+        function viewCustomer(customerId) {
+            const customer = customersData.find(c => c.id == customerId);
+            if (!customer) return;
+            
+            const message = `
+                Просмотр клиента:
+                • Имя: ${customer.fullName}
+                • Телефон: ${customer.phone}
+                • Telegram: ${customer.telegram || 'Не указан'}
+                • Username: ${customer.username || 'Не указан'}
+                • Заявок: ${customer.ordersCount}
+                • Общая сумма: ${customer.totalSpent} сомони
+                • Статус: ${customer.status === 'active' ? 'Активный' : 'Неактивный'}
+                • Лояльность: ${customer.loyalty === 'high' ? 'Высокий' : customer.loyalty === 'medium' ? 'Средний' : 'Низкий'}
+                ${customer.address ? `• Адрес: ${customer.address}` : ''}
+                ${customer.notes ? `• Примечания: ${customer.notes}` : ''}
+            `;
+            
+            alert(message.replace(/^\s+/gm, ''));
+        }
+
+        // Редактирование клиента
+        function editCustomer(customerId) {
+            const customer = customersData.find(c => c.id == customerId);
+            if (!customer) return;
+            
+            isEditing = true;
+            currentEditId = customerId;
+            
+            // Заполняем форму данными клиента
+            document.getElementById('customerName').value = customer.name;
+            document.getElementById('customerSurname').value = customer.surname;
+            document.getElementById('customerPhone').value = customer.phone;
+            document.getElementById('customerTelegram').value = customer.telegram.replace('@', '');
+            document.getElementById('customerAddress').value = customer.address || '';
+            document.getElementById('customerStatus').value = customer.status;
+            document.getElementById('customerLoyalty').value = customer.loyalty;
+            document.getElementById('customerNotes').value = customer.notes || '';
+            
+            document.getElementById('modalTitle').textContent = 'Редактировать клиента';
+            document.getElementById('saveCustomerBtn').textContent = 'Сохранить изменения';
+            
+            // Показываем модальное окно
+            document.getElementById('customerModal').classList.add('active');
+        }
+
+        // Создание нового клиента
+        function createNewCustomer() {
+            isEditing = false;
+            currentEditId = null;
+            
+            // Сбрасываем форму
+            document.getElementById('customerForm').reset();
+            document.getElementById('modalTitle').textContent = 'Новый клиент';
+            document.getElementById('saveCustomerBtn').textContent = 'Создать клиента';
+            
+            // Показываем модальное окно
+            document.getElementById('customerModal').classList.add('active');
+        }
+
+        // Сохранение клиента
+        function saveCustomer() {
+            const form = document.getElementById('customerForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            const customerData = {
+                name: document.getElementById('customerName').value.trim(),
+                surname: document.getElementById('customerSurname').value.trim(),
+                phone: document.getElementById('customerPhone').value.trim(),
+                telegram: document.getElementById('customerTelegram').value.trim(),
+                address: document.getElementById('customerAddress').value.trim(),
+                status: document.getElementById('customerStatus').value,
+                loyalty: document.getElementById('customerLoyalty').value,
+                notes: document.getElementById('customerNotes').value.trim()
+            };
+            
+            if (isEditing && currentEditId) {
+                // Обновление существующего клиента
+                const index = customersData.findIndex(c => c.id == currentEditId);
+                if (index !== -1) {
+                    customersData[index] = {
+                        ...customersData[index],
+                        ...customerData,
+                        fullName: `${customerData.name} ${customerData.surname}`,
+                        telegram: customerData.telegram ? `@${customerData.telegram}` : ''
+                    };
+                    
+                    alert(`Клиент ${customerData.name} ${customerData.surname} обновлен`);
+                }
+            } else {
+                // Создание нового клиента
+                const newId = customersData.length > 0 ? Math.max(...customersData.map(c => c.id)) + 1 : 1;
+                const newCustomer = {
+                    id: newId,
+                    ...customerData,
+                    fullName: `${customerData.name} ${customerData.surname}`,
+                    telegram: customerData.telegram ? `@${customerData.telegram}` : '',
+                    username: customerData.telegram || '',
+                    ordersCount: 0,
+                    lastOrder: new Date().toLocaleDateString('ru-RU'),
+                    totalSpent: "0",
+                    avatarColor: getRandomColor()
+                };
+                
+                customersData.push(newCustomer);
+                alert(`Клиент ${customerData.name} ${customerData.surname} создан`);
+            }
+            
+            // Обновляем UI
+            updateStats();
+            filterCustomers();
+            closeModal();
+        }
+
+        // Удаление клиента
+        function deleteCustomer(customerId) {
+            const customer = customersData.find(c => c.id == customerId);
+            if (!customer) return;
+            
+            if (confirm(`Вы уверены, что хотите удалить клиента "${customer.fullName}"?`)) {
+                const index = customersData.findIndex(c => c.id == customerId);
+                if (index !== -1) {
+                    customersData.splice(index, 1);
+                    alert(`Клиент "${customer.fullName}" удален`);
+                    
+                    // Обновляем UI
+                    updateStats();
+                    filterCustomers();
+                }
+            }
+        }
+
+        // Экспорт клиентов
+        function exportCustomers() {
+            // В реальном приложении здесь был бы вызов API для экспорта
+            const csvContent = "data:text/csv;charset=utf-8," 
+                + "Имя,Фамилия,Телефон,Telegram,Заявок,Сумма,Лояльность\n"
+                + customersData.map(c => 
+                    `"${c.name}","${c.surname}","${c.phone}","${c.telegram}",${c.ordersCount},${c.totalSpent},${c.loyalty}`
+                ).join("\n");
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "clients_export.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Закрытие модального окна
+        function closeModal() {
+            document.getElementById('customerModal').classList.remove('active');
+            document.getElementById('customerForm').reset();
+        }
+
+        // Генерация случайного цвета
+        function getRandomColor() {
+            const colors = [
+                '#2563EB', '#1D4ED8', '#10B981', '#059669', 
+                '#F59E0B', '#D97706', '#EF4444', '#DC2626',
+                '#8B5CF6', '#7C3AED', '#EC4899', '#DB2777'
+            ];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        // Настройка обработчиков событий
+        function setupEventListeners() {
+            // Поиск
+            document.getElementById('searchInput').addEventListener('input', function(e) {
+                currentSearch = e.target.value.toLowerCase();
+                filterCustomers();
+            });
+            
+            // Кнопка создания нового клиента
+            document.getElementById('newCustomerBtn').addEventListener('click', createNewCustomer);
+            
+            // Кнопка экспорта
+            document.getElementById('exportBtn').addEventListener('click', exportCustomers);
+            
+            // Кнопки модального окна
+            document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+            document.getElementById('cancelBtn').addEventListener('click', closeModal);
+            document.getElementById('saveCustomerBtn').addEventListener('click', saveCustomer);
+            
+            // Закрытие модального окна при клике вне его
+            document.getElementById('customerModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("Страница клиентов загружена");
+            setupEventListeners();
+            loadClients();
+        });
+    </script>
+</body>
+</html>

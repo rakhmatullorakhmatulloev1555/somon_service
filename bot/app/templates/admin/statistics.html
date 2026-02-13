@@ -1,0 +1,1821 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статистика | СомонСервис</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563EB;
+            --primary-dark: #1D4ED8;
+            --secondary-color: #10B981;
+            --secondary-dark: #059669;
+            --danger-color: #EF4444;
+            --warning-color: #F59E0B;
+            --dark-color: #111827;
+            --light-color: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-400: #9CA3AF;
+            --gray-500: #6B7280;
+            --gray-600: #4B5563;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background-color: white;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .logo i {
+            font-size: 1.75rem;
+        }
+
+        .logo span {
+            color: var(--dark-color);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 1.5rem 0;
+        }
+
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-section h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--gray-500);
+            padding: 0 1.5rem;
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1.5rem;
+            color: var(--gray-600);
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background-color: var(--gray-100);
+            color: var(--primary-color);
+        }
+
+        .nav-item.active {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+            font-size: 1.125rem;
+        }
+
+        .sidebar-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .user-info h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .user-info p {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        /* Main content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background-color: white;
+            box-shadow: var(--shadow-sm);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .header-left p {
+            color: var(--gray-500);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            width: 280px;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-btn, .settings-btn {
+            position: relative;
+            background: none;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .notification-btn:hover, .settings-btn:hover {
+            background-color: var(--gray-100);
+            color: var(--primary-color);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--danger-color);
+        }
+
+        /* Statistics Page */
+        .statistics-container {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            background-color: var(--gray-100);
+        }
+
+        .statistics-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .statistics-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .statistics-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.625rem 1.25rem;
+            border-radius: var(--radius-md);
+            border: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background-color: white;
+            color: var(--gray-600);
+            border: 1px solid var(--gray-300);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--gray-100);
+            border-color: var(--gray-400);
+        }
+
+        /* Date Range Picker */
+        .date-range-picker {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .date-range-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .date-range-label {
+            font-weight: 500;
+            color: var(--gray-700);
+            font-size: 0.875rem;
+        }
+
+        .date-input {
+            padding: 0.625rem 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            min-width: 150px;
+        }
+
+        .date-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .quick-dates {
+            display: flex;
+            gap: 0.5rem;
+            margin-left: auto;
+        }
+
+        .date-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--gray-300);
+            background-color: white;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .date-btn:hover {
+            background-color: var(--gray-100);
+        }
+
+        .date-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .kpi-card {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .kpi-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .kpi-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+        }
+
+        .kpi-icon.orders {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+        }
+
+        .kpi-icon.revenue {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--secondary-color);
+        }
+
+        .kpi-icon.customers {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+        }
+
+        .kpi-icon.rating {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        .kpi-icon.efficiency {
+            background-color: rgba(168, 85, 247, 0.1);
+            color: #8B5CF6;
+        }
+
+        .kpi-icon.profit {
+            background-color: rgba(6, 182, 212, 0.1);
+            color: #06B6D4;
+        }
+
+        .kpi-info h3 {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            margin-bottom: 0.25rem;
+            font-weight: 500;
+        }
+
+        .kpi-info .value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+
+        .kpi-change {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+        }
+
+        .kpi-change.positive {
+            color: var(--secondary-color);
+        }
+
+        .kpi-change.negative {
+            color: var(--danger-color);
+        }
+
+        /* Charts Section */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 1200px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .chart-card {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-header h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .chart-options {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chart-option {
+            padding: 0.375rem 0.75rem;
+            border: 1px solid var(--gray-300);
+            background-color: white;
+            border-radius: var(--radius-md);
+            font-size: 0.75rem;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .chart-option:hover {
+            background-color: var(--gray-100);
+        }
+
+        .chart-option.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+
+        /* Statistics Tables */
+        .tables-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .table-card {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .table-header h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 400px;
+        }
+
+        .stats-table thead {
+            background-color: var(--gray-50);
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .stats-table th {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--gray-700);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+
+        .stats-table tbody tr {
+            border-bottom: 1px solid var(--gray-200);
+            transition: var(--transition);
+        }
+
+        .stats-table tbody tr:hover {
+            background-color: var(--gray-50);
+        }
+
+        .stats-table td {
+            padding: 1rem 1.5rem;
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+
+        .trend-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .trend-up {
+            color: var(--secondary-color);
+        }
+
+        .trend-down {
+            color: var(--danger-color);
+        }
+
+        .trend-neutral {
+            color: var(--gray-500);
+        }
+
+        /* Comparison Cards */
+        .comparison-section {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 2rem;
+        }
+
+        .comparison-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .comparison-header h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .comparison-card {
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .comparison-title {
+            font-weight: 600;
+            color: var(--dark-color);
+            font-size: 1rem;
+        }
+
+        .comparison-values {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .current-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .previous-value {
+            font-size: 1rem;
+            color: var(--gray-500);
+            text-align: right;
+        }
+
+        .comparison-change {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .change-positive {
+            color: var(--secondary-color);
+        }
+
+        .change-negative {
+            color: var(--danger-color);
+        }
+
+        .comparison-progress {
+            height: 6px;
+            background-color: var(--gray-200);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        .progress-positive {
+            background-color: var(--secondary-color);
+        }
+
+        .progress-negative {
+            background-color: var(--danger-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -260px;
+                top: 0;
+                bottom: 0;
+            }
+            
+            .sidebar.active {
+                left: 0;
+            }
+            
+            .statistics-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+            }
+            
+            .statistics-controls {
+                justify-content: space-between;
+            }
+            
+            .date-range-picker {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .date-range-group {
+                flex-direction: column;
+                align-items: stretch;
+                width: 100%;
+            }
+            
+            .quick-dates {
+                margin-left: 0;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .header {
+                padding: 1rem;
+            }
+            
+            .search-box input {
+                width: 200px;
+            }
+            
+            .statistics-container {
+                padding: 1rem;
+            }
+            
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tables-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .search-box input {
+                width: 150px;
+            }
+            
+            .header-right {
+                gap: 1rem;
+            }
+            
+            .statistics-controls {
+                flex-wrap: wrap;
+            }
+            
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-dates {
+                justify-content: stretch;
+            }
+            
+            .date-btn {
+                flex: 1;
+                text-align: center;
+            }
+            
+            .chart-options {
+                flex-wrap: wrap;
+            }
+            .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(37, 99, 235, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .alert-danger {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+            border-left: 4px solid var(--danger-color);
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .stock-low {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+        }
+        
+        .stock-out {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+        
+        .stock-medium {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+        }
+        
+        code {
+            background-color: var(--gray-100);
+            padding: 0.2rem 0.4rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-family: monospace;
+        }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    {% include "admin/sidebar.html" %}
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1>Статистика</h1>
+                <p>Детальная статистика и аналитика работы сервисного центра</p>
+            </div>
+            
+            <div class="header-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Поиск по метрикам...">
+                </div>
+                
+                <div class="header-actions">
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge"></span>
+                    </button>
+                    <button class="settings-btn">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Statistics Content -->
+        <div class="statistics-container">
+            <div class="statistics-header">
+                <h2>Ключевые показатели</h2>
+                <div class="statistics-controls">
+                    <button class="btn btn-outline" id="exportStatsBtn">
+                        <i class="fas fa-download"></i>
+                        Экспорт данных
+                    </button>
+                    <button class="btn btn-primary" id="refreshStatsBtn">
+                        <i class="fas fa-redo"></i>
+                        Обновить
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Date Range Picker -->
+            <div class="date-range-picker">
+                <div class="date-range-group">
+                    <span class="date-range-label">Период анализа:</span>
+                    <input type="date" id="startDate" class="date-input">
+                    <span>—</span>
+                    <input type="date" id="endDate" class="date-input">
+                </div>
+                <div class="quick-dates">
+                    <button class="date-btn" data-days="7">7 дней</button>
+                    <button class="date-btn active" data-days="30">30 дней</button>
+                    <button class="date-btn" data-days="90">90 дней</button>
+                    <button class="date-btn" data-period="month">Текущий месяц</button>
+                    <button class="date-btn" data-period="year">Текущий год</button>
+                </div>
+            </div>
+            
+            <!-- Loading Spinner -->
+            <div id="loadingSpinner" class="text-center" style="display: none; margin: 2rem;">
+                <div class="spinner"></div>
+                <p style="margin-top: 1rem; color: var(--gray-600);">Загрузка данных...</p>
+            </div>
+            
+            <!-- Error Alert -->
+            <div id="errorAlert" class="alert alert-danger" style="display: none; margin-bottom: 1rem;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span id="errorMessage"></span>
+            </div>
+            
+            <!-- KPI Cards -->
+            <div class="kpi-grid" id="kpiGrid">
+                <!-- Динамически загружается -->
+            </div>
+            
+            <!-- Charts Section -->
+            <div class="charts-grid" id="chartsGrid" style="display: none;">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Динамика заявок по дням</h3>
+                        <div class="chart-options">
+                            <button class="chart-option active" data-period="week">Неделя</button>
+                            <button class="chart-option" data-period="month">Месяц</button>
+                            <button class="chart-option" data-period="year">Год</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="ordersTrendChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Распределение заявок по категориям</h3>
+                        <div class="chart-options">
+                            <button class="chart-option active" data-view="pie">Круговая</button>
+                            <button class="chart-option" data-view="bar">Столбчатая</button>
+                            <button class="chart-option" data-view="doughnut">Кольцевая</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="ordersTypeChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Выручка по категориям</h3>
+                        <div class="chart-options">
+                            <button class="chart-option active" data-period="month">Месяц</button>
+                            <button class="chart-option" data-period="quarter">Квартал</button>
+                            <button class="chart-option" data-period="year">Год</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="revenueCategoryChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Рейтинг мастеров</h3>
+                        <div class="chart-options">
+                            <button class="chart-option active" data-sort="rating">По рейтингу</button>
+                            <button class="chart-option" data-sort="orders">По заявкам</button>
+                            <button class="chart-option" data-sort="revenue">По выручке</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="mastersRatingChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Statistics Tables -->
+            <div class="tables-grid" id="tablesGrid" style="display: none;">
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3>Топ клиентов по выручке</h3>
+                    </div>
+                    <div class="table-container">
+                        <table class="stats-table">
+                            <thead>
+                                <tr>
+                                    <th>Клиент</th>
+                                    <th>Заявок</th>
+                                    <th>Выручка</th>
+                                    <th>Тренд</th>
+                                </tr>
+                            </thead>
+                            <tbody id="topCustomersBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3>Статистика по дням недели</h3>
+                    </div>
+                    <div class="table-container">
+                        <table class="stats-table">
+                            <thead>
+                                <tr>
+                                    <th>День недели</th>
+                                    <th>Заявок</th>
+                                    <th>Выручка</th>
+                                    <th>Среднее время</th>
+                                </tr>
+                            </thead>
+                            <tbody id="weekdayStatsBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3>Запчасти с низким запасом</h3>
+                    </div>
+                    <div class="table-container">
+                        <table class="stats-table">
+                            <thead>
+                                <tr>
+                                    <th>Запчасть</th>
+                                    <th>Артикул</th>
+                                    <th>В наличии</th>
+                                    <th>Минимум</th>
+                                    <th>Статус</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lowStockPartsBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="table-card">
+                    <div class="table-header">
+                        <h3>Статистика склада</h3>
+                    </div>
+                    <div class="table-container">
+                        <table class="stats-table">
+                            <thead>
+                                <tr>
+                                    <th>Категория</th>
+                                    <th>Запчастей</th>
+                                    <th>Стоимость</th>
+                                    <th>Доля</th>
+                                </tr>
+                            </thead>
+                            <tbody id="categoriesStatsBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Comparison Section -->
+            <div class="comparison-section" id="comparisonSection" style="display: none;">
+                <div class="comparison-header">
+                    <h3>Сравнение с предыдущим периодом</h3>
+                    <div class="chart-options">
+                        <button class="chart-option active" data-compare="month">Месяц</button>
+                        <button class="chart-option" data-compare="quarter">Квартал</button>
+                        <button class="chart-option" data-compare="year">Год</button>
+                    </div>
+                </div>
+                <div class="comparison-grid" id="comparisonGrid"></div>
+            </div>
+        </div>
+    </main>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // ============================================
+        // ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ
+        // ============================================
+        
+        let ordersTrendChart = null;
+        let ordersTypeChart = null;
+        let revenueCategoryChart = null;
+        let mastersRatingChart = null;
+        
+        let currentPeriod = 'week';
+        let currentView = 'pie';
+        let currentSort = 'rating';
+        let currentCompare = 'month';
+        
+        // ============================================
+        // ЗАГРУЗКА ДАННЫХ ПРИ ЗАГРУЗКЕ СТРАНИЦЫ
+        // ============================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            setDefaultDateRange();
+            loadAllStatistics();
+            setupEventListeners();
+        });
+        
+        // ============================================
+        // ЗАГРУЗКА ВСЕЙ СТАТИСТИКИ
+        // ============================================
+        
+        async function loadAllStatistics() {
+            showLoading(true);
+            hideError();
+            
+            try {
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
+                
+                // Загружаем все данные параллельно
+                const [overview, trends, ordersByType, mastersRating, topCustomers, 
+                       weekdayStats, lowStockParts, categoriesStats, comparison] = await Promise.all([
+                    fetchStatisticsOverview(startDate, endDate),
+                    fetchTrends(currentPeriod),
+                    fetchOrdersByType(),
+                    fetchMastersRating(currentSort),
+                    fetchTopCustomers(),
+                    fetchWeekdayStats(),
+                    fetchLowStockParts(),
+                    fetchCategoriesStats(),
+                    fetchComparison(currentCompare, startDate, endDate)
+                ]);
+                
+                // Обновляем UI
+                renderKPIs(overview);
+                renderTrendsChart(trends);
+                renderOrdersTypeChart(ordersByType);
+                renderMastersRatingChart(mastersRating);
+                renderTopCustomers(topCustomers);
+                renderWeekdayStats(weekdayStats);
+                renderLowStockParts(lowStockParts);
+                renderCategoriesStats(categoriesStats);
+                renderComparison(comparison);
+                
+                // Показываем секции
+                document.getElementById('chartsGrid').style.display = 'grid';
+                document.getElementById('tablesGrid').style.display = 'grid';
+                document.getElementById('comparisonSection').style.display = 'block';
+                
+            } catch (error) {
+                console.error('Error loading statistics:', error);
+                showError('Ошибка загрузки статистики. Пожалуйста, попробуйте позже.');
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        // ============================================
+        // API ЗАПРОСЫ
+        // ============================================
+        
+        async function fetchStatisticsOverview(startDate, endDate) {
+            const url = `/api/statistics/overview?start_date=${startDate}&end_date=${endDate}`;
+            const response = await fetch(url);
+            const data = await response.json();
+            return data.success ? data.data : null;
+        }
+        
+        async function fetchTrends(period) {
+            const response = await fetch(`/api/statistics/trends?period=${period}`);
+            const data = await response.json();
+            return data.success ? data.data : null;
+        }
+        
+        async function fetchOrdersByType() {
+            const response = await fetch('/api/statistics/orders-by-type');
+            const data = await response.json();
+            return data.success ? data.data : null;
+        }
+        
+        async function fetchMastersRating(sortBy) {
+            const response = await fetch(`/api/statistics/masters-rating?sort_by=${sortBy}`);
+            const data = await response.json();
+            return data.success ? data.data : null;
+        }
+        
+        async function fetchTopCustomers() {
+            const response = await fetch('/api/statistics/top-customers');
+            const data = await response.json();
+            return data.success ? data.data : [];
+        }
+        
+        async function fetchWeekdayStats() {
+            const response = await fetch('/api/statistics/weekday-stats');
+            const data = await response.json();
+            return data.success ? data.data : [];
+        }
+        
+        async function fetchLowStockParts() {
+            const response = await fetch('/api/parts/low-stock/all');
+            const data = await response.json();
+            return data.success ? data.data : [];
+        }
+        
+        async function fetchCategoriesStats() {
+            const response = await fetch('/api/parts/categories');
+            const data = await response.json();
+            return data.success ? data.data : [];
+        }
+        
+        async function fetchComparison(period, startDate, endDate) {
+            const response = await fetch(`/api/statistics/comparison?period=${period}`);
+            const data = await response.json();
+            return data.success ? data.data : [];
+        }
+        
+        // ============================================
+        // ОТРИСОВКА KPI КАРТОЧЕК
+        // ============================================
+        
+        function renderKPIs(data) {
+            if (!data) return;
+            
+            const kpis = data.kpis;
+            const comparison = data.comparison;
+            
+            const kpiGrid = document.getElementById('kpiGrid');
+            kpiGrid.innerHTML = `
+                <div class="kpi-card">
+                    <div class="kpi-icon orders">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <div class="kpi-info">
+                        <h3>Всего заявок</h3>
+                        <div class="value">${kpis.totalOrders}</div>
+                        <div class="kpi-change ${comparison.ordersGrowth >= 0 ? 'positive' : 'negative'}">
+                            <i class="fas fa-arrow-${comparison.ordersGrowth >= 0 ? 'up' : 'down'}"></i>
+                            <span>${Math.abs(comparison.ordersGrowth).toFixed(1)}% за месяц</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="kpi-card">
+                    <div class="kpi-icon revenue">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="kpi-info">
+                        <h3>Общая выручка</h3>
+                        <div class="value">${formatMoney(kpis.totalRevenue)}</div>
+                        <div class="kpi-change ${comparison.revenueGrowth >= 0 ? 'positive' : 'negative'}">
+                            <i class="fas fa-arrow-${comparison.revenueGrowth >= 0 ? 'up' : 'down'}"></i>
+                            <span>${Math.abs(comparison.revenueGrowth).toFixed(1)}% за месяц</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="kpi-card">
+                    <div class="kpi-icon customers">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="kpi-info">
+                        <h3>Новых клиентов</h3>
+                        <div class="value">${kpis.newCustomers}</div>
+                        <div class="kpi-change ${comparison.customersGrowth >= 0 ? 'positive' : 'negative'}">
+                            <i class="fas fa-arrow-${comparison.customersGrowth >= 0 ? 'up' : 'down'}"></i>
+                            <span>${Math.abs(comparison.customersGrowth).toFixed(1)}% за месяц</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="kpi-card">
+                    <div class="kpi-icon rating">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="kpi-info">
+                        <h3>Средний рейтинг</h3>
+                        <div class="value">${kpis.averageRating.toFixed(1)}</div>
+                        <div class="kpi-change ${comparison.ratingGrowth >= 0 ? 'positive' : 'negative'}">
+                            <i class="fas fa-arrow-${comparison.ratingGrowth >= 0 ? 'up' : 'down'}"></i>
+                            <span>${Math.abs(comparison.ratingGrowth).toFixed(1)}% за месяц</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="kpi-card">
+                    <div class="kpi-icon efficiency">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="kpi-info">
+                        <h3>Эффективность</h3>
+                        <div class="value">${kpis.efficiency}%</div>
+                        <div class="kpi-change ${kpis.efficiency >= 80 ? 'positive' : 'negative'}">
+                            <i class="fas fa-arrow-${kpis.efficiency >= 80 ? 'up' : 'down'}"></i>
+                            <span>${kpis.efficiency >= 80 ? '+' : '-'}${Math.abs(kpis.efficiency - 80).toFixed(1)}%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="kpi-card">
+                    <div class="kpi-icon profit">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <div class="kpi-info">
+                        <h3>Маржа прибыли</h3>
+                        <div class="value">${kpis.profitMargin}%</div>
+                        <div class="kpi-change ${kpis.profitMargin >= 30 ? 'positive' : 'negative'}">
+                            <i class="fas fa-arrow-${kpis.profitMargin >= 30 ? 'up' : 'down'}"></i>
+                            <span>${kpis.profitMargin >= 30 ? '+' : '-'}${Math.abs(kpis.profitMargin - 30).toFixed(1)}%</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // ============================================
+        // ОТРИСОВКА ГРАФИКОВ
+        // ============================================
+        
+        function renderTrendsChart(data) {
+            if (!data) return;
+            
+            const ctx = document.getElementById('ordersTrendChart').getContext('2d');
+            
+            if (ordersTrendChart) {
+                ordersTrendChart.destroy();
+            }
+            
+            ordersTrendChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: 'Количество заявок',
+                        data: data.values,
+                        borderColor: '#2563EB',
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { mode: 'index', intersect: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { drawBorder: false }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderOrdersTypeChart(data) {
+            if (!data) return;
+            
+            const ctx = document.getElementById('ordersTypeChart').getContext('2d');
+            
+            if (ordersTypeChart) {
+                ordersTypeChart.destroy();
+            }
+            
+            ordersTypeChart = new Chart(ctx, {
+                type: currentView,
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        data: data.values,
+                        backgroundColor: data.colors || ['#2563EB', '#10B981', '#F59E0B', '#8B5CF6', '#EF4444', '#6B7280'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: currentView === 'pie' || currentView === 'doughnut' ? 'right' : 'bottom',
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderMastersRatingChart(data) {
+            if (!data) return;
+            
+            const ctx = document.getElementById('mastersRatingChart').getContext('2d');
+            
+            if (mastersRatingChart) {
+                mastersRatingChart.destroy();
+            }
+            
+            mastersRatingChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: currentSort === 'rating' ? 'Рейтинг' : 
+                               currentSort === 'orders' ? 'Заявок' : 'Выручка (сомони)',
+                        data: data.values,
+                        backgroundColor: data.colors || '#2563EB',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ...(currentSort === 'rating' && { max: 5, ticks: { stepSize: 1 } })
+                        }
+                    }
+                }
+            });
+        }
+        
+        // ============================================
+        // ОТРИСОВКА ТАБЛИЦ
+        // ============================================
+        
+        function renderTopCustomers(customers) {
+            const tbody = document.getElementById('topCustomersBody');
+            tbody.innerHTML = '';
+            
+            if (!customers || customers.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 2rem;">Нет данных</td></tr>';
+                return;
+            }
+            
+            customers.forEach(customer => {
+                const row = document.createElement('tr');
+                const trendIcon = customer.trend === 'up' ? 'fa-arrow-up trend-up' : 
+                                 customer.trend === 'down' ? 'fa-arrow-down trend-down' : 
+                                 'fa-minus trend-neutral';
+                
+                row.innerHTML = `
+                    <td><strong>${customer.name}</strong></td>
+                    <td>${customer.orders}</td>
+                    <td>${formatMoney(customer.revenue)}</td>
+                    <td class="trend-cell">
+                        <i class="fas ${trendIcon}"></i>
+                        <span>${customer.trend === 'up' ? 'Рост' : customer.trend === 'down' ? 'Спад' : 'Стабильно'}</span>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        function renderWeekdayStats(stats) {
+            const tbody = document.getElementById('weekdayStatsBody');
+            tbody.innerHTML = '';
+            
+            if (!stats || stats.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 2rem;">Нет данных</td></tr>';
+                return;
+            }
+            
+            stats.forEach(day => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${day.day}</td>
+                    <td>${day.orders}</td>
+                    <td>${formatMoney(day.revenue)}</td>
+                    <td>${day.avgTime}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        function renderLowStockParts(parts) {
+            const tbody = document.getElementById('lowStockPartsBody');
+            tbody.innerHTML = '';
+            
+            if (!parts || parts.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem;">✅ Нет запчастей с низким запасом</td></tr>';
+                return;
+            }
+            
+            parts.forEach(part => {
+                const row = document.createElement('tr');
+                const statusClass = part.stock === 0 ? 'stock-out' : 
+                                  part.stock < part.min_stock ? 'stock-low' : 'stock-medium';
+                const statusText = part.stock === 0 ? 'Нет в наличии' : 
+                                  part.stock < part.min_stock ? 'Низкий' : 'Средний';
+                
+                row.innerHTML = `
+                    <td><strong>${part.name}</strong></td>
+                    <td><code>${part.sku}</code></td>
+                    <td style="color: ${part.stock === 0 ? '#EF4444' : part.stock < part.min_stock ? '#F59E0B' : '#10B981'}; font-weight: 600;">
+                        ${part.stock} шт.
+                    </td>
+                    <td>${part.min_stock} шт.</td>
+                    <td><span class="badge ${statusClass}">${statusText}</span></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        function renderCategoriesStats(categories) {
+            const tbody = document.getElementById('categoriesStatsBody');
+            tbody.innerHTML = '';
+            
+            if (!categories || categories.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 2rem;">Нет данных</td></tr>';
+                return;
+            }
+            
+            const totalParts = categories.reduce((sum, cat) => sum + cat.count, 0);
+            
+            categories.slice(0, 5).forEach(cat => {
+                const row = document.createElement('tr');
+                const percentage = totalParts > 0 ? ((cat.count / totalParts) * 100).toFixed(1) : 0;
+                
+                row.innerHTML = `
+                    <td>${cat.name}</td>
+                    <td>${cat.count} шт.</td>
+                    <td>${formatMoney(cat.total_value || 0)}</td>
+                    <td>${percentage}%</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        // ============================================
+        // ОТРИСОВКА СРАВНЕНИЯ
+        // ============================================
+        
+        function renderComparison(data) {
+            const grid = document.getElementById('comparisonGrid');
+            grid.innerHTML = '';
+            
+            if (!data || data.length === 0) {
+                grid.innerHTML = '<p style="text-align: center; padding: 2rem;">Нет данных для сравнения</p>';
+                return;
+            }
+            
+            data.forEach(item => {
+                const isPositive = item.change >= 0;
+                const changeClass = isPositive ? 'change-positive' : 'change-negative';
+                const progressClass = isPositive ? 'progress-positive' : 'progress-negative';
+                const changeIcon = isPositive ? 'fa-arrow-up' : 'fa-arrow-down';
+                const progressWidth = Math.min(Math.abs(item.change), 100);
+                
+                const card = document.createElement('div');
+                card.className = 'comparison-card';
+                card.innerHTML = `
+                    <div class="comparison-title">${item.title}</div>
+                    <div class="comparison-values">
+                        <div class="current-value">${formatValue(item.current, item.title)}</div>
+                        <div class="previous-value">
+                            Предыдущий: ${formatValue(item.previous, item.title)}
+                        </div>
+                    </div>
+                    <div class="comparison-change ${changeClass}">
+                        <i class="fas ${changeIcon}"></i>
+                        <span>${Math.abs(item.change)}%</span>
+                    </div>
+                    <div class="comparison-progress">
+                        <div class="progress-bar ${progressClass}" style="width: ${progressWidth}%"></div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+        
+        // ============================================
+        // ОБНОВЛЕНИЕ ГРАФИКОВ ПРИ СМЕНЕ ПАРАМЕТРОВ
+        // ============================================
+        
+        async function updateOrdersTrendChart() {
+            showLoading(true);
+            try {
+                const trends = await fetchTrends(currentPeriod);
+                renderTrendsChart(trends);
+            } catch (error) {
+                console.error('Error updating trends chart:', error);
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        async function updateOrdersTypeChart() {
+            ordersTypeChart.config.type = currentView;
+            ordersTypeChart.update();
+        }
+        
+        async function updateRevenueCategoryChart() {
+            // TODO: добавить API для выручки по категориям
+        }
+        
+        async function updateMastersRatingChart() {
+            showLoading(true);
+            try {
+                const mastersRating = await fetchMastersRating(currentSort);
+                renderMastersRatingChart(mastersRating);
+            } catch (error) {
+                console.error('Error updating masters rating chart:', error);
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        // ============================================
+        // ОБРАБОТЧИКИ СОБЫТИЙ
+        // ============================================
+        
+        function setupEventListeners() {
+            // Date range buttons
+            document.querySelectorAll('.date-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const days = this.dataset.days;
+                    const period = this.dataset.period;
+                    
+                    if (days) {
+                        setDateRangeDays(parseInt(days));
+                    } else if (period === 'month') {
+                        setCurrentMonth();
+                    } else if (period === 'year') {
+                        setCurrentYear();
+                    }
+                });
+            });
+            
+            // Chart options
+            document.querySelectorAll('.chart-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const parent = this.closest('.chart-options');
+                    parent.querySelectorAll('.chart-option').forEach(o => o.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const chartCard = this.closest('.chart-card');
+                    const chartId = chartCard.querySelector('canvas').id;
+                    
+                    if (chartId === 'ordersTrendChart') {
+                        currentPeriod = this.dataset.period;
+                        updateOrdersTrendChart();
+                    } else if (chartId === 'ordersTypeChart') {
+                        currentView = this.dataset.view;
+                        updateOrdersTypeChart();
+                    } else if (chartId === 'mastersRatingChart') {
+                        currentSort = this.dataset.sort;
+                        updateMastersRatingChart();
+                    } else if (this.closest('.comparison-header')) {
+                        currentCompare = this.dataset.compare;
+                        loadAllStatistics(); // Перезагружаем всю статистику
+                    }
+                });
+            });
+            
+            // Date inputs
+            document.getElementById('startDate').addEventListener('change', loadAllStatistics);
+            document.getElementById('endDate').addEventListener('change', loadAllStatistics);
+            
+            // Refresh button
+            document.getElementById('refreshStatsBtn').addEventListener('click', loadAllStatistics);
+            
+            // Export button
+            document.getElementById('exportStatsBtn').addEventListener('click', exportStatistics);
+        }
+        
+        // ============================================
+        // ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+        // ============================================
+        
+        function setDefaultDateRange() {
+            const today = new Date();
+            const thirtyDaysAgo = new Date();
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 29);
+            
+            document.getElementById('startDate').value = formatDateForInput(thirtyDaysAgo);
+            document.getElementById('endDate').value = formatDateForInput(today);
+        }
+        
+        function setDateRangeDays(days) {
+            const endDate = new Date();
+            const startDate = new Date();
+            startDate.setDate(startDate.getDate() - days + 1);
+            
+            document.getElementById('startDate').value = formatDateForInput(startDate);
+            document.getElementById('endDate').value = formatDateForInput(endDate);
+            
+            loadAllStatistics();
+        }
+        
+        function setCurrentMonth() {
+            const today = new Date();
+            const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+            const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            
+            document.getElementById('startDate').value = formatDateForInput(firstDay);
+            document.getElementById('endDate').value = formatDateForInput(lastDay);
+            
+            loadAllStatistics();
+        }
+        
+        function setCurrentYear() {
+            const today = new Date();
+            const firstDay = new Date(today.getFullYear(), 0, 1);
+            const lastDay = new Date(today.getFullYear(), 11, 31);
+            
+            document.getElementById('startDate').value = formatDateForInput(firstDay);
+            document.getElementById('endDate').value = formatDateForInput(lastDay);
+            
+            loadAllStatistics();
+        }
+        
+        function formatDateForInput(date) {
+            return date.toISOString().split('T')[0];
+        }
+        
+        function formatMoney(amount) {
+            if (amount === undefined || amount === null) return '0 сомони';
+            return Math.round(amount).toLocaleString() + ' сомони';
+        }
+        
+        function formatValue(value, title) {
+            if (value === undefined || value === null) return '0';
+            
+            if (title.includes('Выручка') || title.includes('Средний чек')) {
+                return Math.round(value).toLocaleString() + ' сомони';
+            } else if (title.includes('Время')) {
+                return value.toFixed(1) + 'ч';
+            } else if (title.includes('Рейтинг') || title.includes('Удовлетворенность')) {
+                return value.toFixed(1);
+            } else {
+                return value.toLocaleString();
+            }
+        }
+        
+        function showLoading(show) {
+            document.getElementById('loadingSpinner').style.display = show ? 'block' : 'none';
+        }
+        
+        function showError(message) {
+            const alert = document.getElementById('errorAlert');
+            document.getElementById('errorMessage').textContent = message;
+            alert.style.display = 'flex';
+        }
+        
+        function hideError() {
+            document.getElementById('errorAlert').style.display = 'none';
+        }
+        
+        function exportStatistics() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            
+            // Формируем CSV
+            let csv = 'Отчет по статистике\n';
+            csv += `Период: ${startDate} - ${endDate}\n\n`;
+            
+            // Добавляем KPI
+            csv += 'КЛЮЧЕВЫЕ ПОКАЗАТЕЛИ\n';
+            // ... собираем данные с текущей страницы
+            
+            // Скачиваем файл
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `statistics_${startDate}_${endDate}.csv`;
+            a.click();
+        }
+    </script>
+    
+    
+</body>
+</html>

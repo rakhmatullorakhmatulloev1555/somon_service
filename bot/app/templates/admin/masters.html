@@ -1,0 +1,1763 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мастера | СомонСервис</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563EB;
+            --primary-dark: #1D4ED8;
+            --secondary-color: #10B981;
+            --secondary-dark: #059669;
+            --danger-color: #EF4444;
+            --warning-color: #F59E0B;
+            --dark-color: #111827;
+            --light-color: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-400: #9CA3AF;
+            --gray-500: #6B7280;
+            --gray-600: #4B5563;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .toast-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: slideIn 0.3s ease;
+    box-shadow: var(--shadow-lg);
+}
+
+.toast-notification.toast-success {
+    background-color: var(--secondary-color);
+}
+
+.toast-notification.toast-error {
+    background-color: var(--danger-color);
+}
+
+.toast-notification.toast-info {
+    background-color: var(--primary-color);
+}
+
+.toast-notification.toast-warning {
+    background-color: var(--warning-color);
+}
+
+.toast-notification .toast-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.toast-notification .toast-close:hover {
+    opacity: 1;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
+}
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background-color: white;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .logo i {
+            font-size: 1.75rem;
+        }
+
+        .logo span {
+            color: var(--dark-color);
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 1.5rem 0;
+        }
+
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-section h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--gray-500);
+            padding: 0 1.5rem;
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1.5rem;
+            color: var(--gray-600);
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background-color: var(--gray-100);
+            color: var(--primary-color);
+        }
+
+        .nav-item.active {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+            font-size: 1.125rem;
+        }
+
+        .sidebar-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .user-info h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .user-info p {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        /* Main content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background-color: white;
+            box-shadow: var(--shadow-sm);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .header-left p {
+            color: var(--gray-500);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            width: 280px;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-btn, .settings-btn {
+            position: relative;
+            background: none;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .notification-btn:hover, .settings-btn:hover {
+            background-color: var(--gray-100);
+            color: var(--primary-color);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--danger-color);
+        }
+
+        /* Masters Page */
+        .masters-container {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            background-color: var(--gray-100);
+        }
+
+        .masters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .masters-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .masters-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.625rem 1.25rem;
+            border-radius: var(--radius-md);
+            border: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-outline {
+            background-color: white;
+            color: var(--gray-600);
+            border: 1px solid var(--gray-300);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--gray-100);
+            border-color: var(--gray-400);
+        }
+
+        .btn-success {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: var(--secondary-dark);
+        }
+
+        /* Masters Grid */
+        .masters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .master-card {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .master-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-4px);
+        }
+
+        .master-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .master-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 3px solid white;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            font-weight: 600;
+        }
+
+        .master-info h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .master-info p {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        .master-stats {
+            padding: 1.5rem;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: var(--gray-200);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .master-skills {
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        .skills-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--dark-color);
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .skill-tag {
+            background-color: var(--gray-100);
+            color: var(--gray-700);
+            padding: 0.375rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .master-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .status-available {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--secondary-color);
+        }
+
+        .status-busy {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+        }
+
+        .status-offline {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        .master-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--gray-300);
+            background-color: white;
+            color: var(--gray-600);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            background-color: var(--gray-100);
+            color: var(--primary-color);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .stat-info h3 {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .stat-info .value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            line-height: 1;
+        }
+
+        .stat-info .change {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .stat-info .change.positive {
+            color: var(--secondary-color);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray-500);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--danger-color);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            font-size: 0.875rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .skills-input {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .skill-tag-input {
+            background-color: var(--gray-100);
+            color: var(--gray-700);
+            padding: 0.375rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .skill-tag-input .remove-skill {
+            cursor: pointer;
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        .skill-tag-input .remove-skill:hover {
+            color: var(--danger-color);
+        }
+
+        .add-skill-input {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .add-skill-input input {
+            flex: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -260px;
+                top: 0;
+                bottom: 0;
+            }
+            
+            .sidebar.active {
+                left: 0;
+            }
+            
+            .masters-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .masters-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+            }
+            
+            .masters-controls {
+                justify-content: space-between;
+            }
+            
+            .header {
+                padding: 1rem;
+            }
+            
+            .search-box input {
+                width: 200px;
+            }
+            
+            .masters-container {
+                padding: 1rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .search-box input {
+                width: 150px;
+            }
+            
+            .header-right {
+                gap: 1rem;
+            }
+            
+            .masters-controls {
+                flex-wrap: wrap;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    {% include "admin/sidebar.html" %}
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1>Мастера</h1>
+                <p>Управление персоналом сервисного центра</p>
+            </div>
+            
+            <div class="header-right">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Поиск по имени, специализации...">
+                </div>
+                
+                <div class="header-actions">
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge"></span>
+                    </button>
+                    <button class="settings-btn">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Masters Content -->
+        <div class="masters-container">
+            <div class="masters-header">
+                <h2>Команда мастеров</h2>
+                <div class="masters-controls">
+                    <button class="btn btn-outline" id="scheduleBtn">
+                        <i class="fas fa-calendar-alt"></i>
+                        График работы
+                    </button>
+                    <button class="btn btn-primary" id="newMasterBtn">
+                        <i class="fas fa-plus"></i>
+                        Новый мастер
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Всего мастеров</h3>
+                        <div class="value" id="totalMasters">0</div>
+                        <div class="change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+2 за месяц</span>
+                        </div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-user-cog"></i>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Доступно сейчас</h3>
+                        <div class="value" id="availableMasters">0</div>
+                        <div class="change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+1 за неделю</span>
+                        </div>
+                    </div>
+                    <div class="stat-icon" style="background-color: rgba(16, 185, 129, 0.1); color: var(--secondary-color);">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Средний рейтинг</h3>
+                        <div class="value" id="averageRating">0.0</div>
+                        <div class="change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+0.3 за месяц</span>
+                        </div>
+                    </div>
+                    <div class="stat-icon" style="background-color: rgba(245, 158, 11, 0.1); color: var(--warning-color);">
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Заявок в работе</h3>
+                        <div class="value" id="activeOrders">0</div>
+                        <div class="change negative">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>-3 за неделю</span>
+                        </div>
+                    </div>
+                    <div class="stat-icon" style="background-color: rgba(239, 68, 68, 0.1); color: var(--danger-color);">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Masters Grid -->
+            <div class="masters-grid" id="mastersGrid">
+                <!-- Masters cards will be populated by JavaScript -->
+            </div>
+        </div>
+    </main>
+    
+    <!-- Master Modal -->
+    <div class="modal" id="masterModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Новый мастер</h3>
+                <button class="modal-close" id="closeModalBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="masterForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="masterName">Имя *</label>
+                            <input type="text" id="masterName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="masterSurname">Фамилия *</label>
+                            <input type="text" id="masterSurname" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="masterPhone">Телефон *</label>
+                        <input type="tel" id="masterPhone" class="form-control" required placeholder="+992 __ ___ __ __">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="masterSpecialization">Специализация *</label>
+                            <select id="masterSpecialization" class="form-control" required>
+                                <option value="">Выберите специализацию</option>
+                                <option value="notebooks">Ноутбуки</option>
+                                <option value="smartphones">Смартфоны</option>
+                                <option value="pc">Настольные ПК</option>
+                                <option value="data">Восстановление данных</option>
+                                <option value="electronics">Электроника</option>
+                                <option value="general">Универсал</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="masterExperience">Опыт (лет) *</label>
+                            <input type="number" id="masterExperience" class="form-control" required min="0" max="50" step="0.5">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="masterStatus">Статус</label>
+                            <select id="masterStatus" class="form-control">
+                                <option value="available">Доступен</option>
+                                <option value="busy">Занят</option>
+                                <option value="offline">Недоступен</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="masterRating">Рейтинг</label>
+                            <input type="number" id="masterRating" class="form-control" min="0" max="5" step="0.1" value="4.5">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Навыки</label>
+                        <div class="skills-input" id="skillsContainer">
+                            <!-- Skills will be added here -->
+                        </div>
+                        <div class="add-skill-input">
+                            <input type="text" id="newSkillInput" class="form-control" placeholder="Добавить навык">
+                            <button type="button" class="btn btn-outline" id="addSkillBtn">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="masterSchedule">График работы</label>
+                        <textarea id="masterSchedule" class="form-control" rows="2" placeholder="Пн-Пт: 9:00-18:00, Сб: 10:00-16:00"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="masterSalary">Зарплата (сомони/мес)</label>
+                        <input type="number" id="masterSalary" class="form-control" min="0" step="100">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="masterNotes">Примечания</label>
+                        <textarea id="masterNotes" class="form-control" rows="3" placeholder="Дополнительная информация"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelBtn">
+                    Отмена
+                </button>
+                <button class="btn btn-primary" id="saveMasterBtn">
+                    Сохранить
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    // Global state
+    let mastersData = [];
+    let currentSkills = [];
+    let isEditing = false;
+    let currentEditId = null;
+    let currentSearch = "";
+
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', function() {
+        setupEventListeners();
+        loadMasters();
+    });
+
+    // Load masters from backend API
+    async function loadMasters() {
+        try {
+            showLoading(true);
+            const response = await fetch('/api/masters');
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            
+            // Transform API data to match our frontend structure
+            mastersData = data.map(master => ({
+                id: master.id,
+                name: master.name || "",
+                surname: master.surname || "",
+                fullName: `${master.name || ""} ${master.surname || ""}`.trim() || "Без имени",
+                phone: master.phone || "",
+                specialization: master.specialization || "Универсал",
+                experience: master.experience || 0,
+                status: mapMasterStatus(master.status),
+                rating: master.rating || 0,
+                skills: Array.isArray(master.skills) 
+                    ? master.skills.filter(s => s)
+                    : (typeof master.skills === 'string' 
+                        ? master.skills.split(',').map(s => s.trim()).filter(s => s)
+                        : []),
+                schedule: master.schedule || "",
+                activeOrders: master.active_orders || 0,
+                completedOrders: master.completed_orders || 0,
+                salary: master.salary || 0,
+                avatarColor: getRandomColor(),
+                notes: master.notes || "",
+                telegramId: master.telegram_id || null
+            }));
+            
+            updateStats();
+            renderMastersGrid();
+            
+        } catch (error) {
+            console.error('Ошибка загрузки мастеров:', error);
+            showToast(`Ошибка загрузки данных: ${error.message}`, 'error');
+            
+            // Если API недоступен, показываем пустой список
+            mastersData = [];
+            updateStats();
+            renderMastersGrid();
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    // Map backend status to frontend status
+    function mapMasterStatus(backendStatus) {
+        if (!backendStatus) return 'available';
+        
+        const statusMap = {
+            'active': 'available',
+            'available': 'available',
+            'busy': 'busy',
+            'offline': 'offline',
+            'inactive': 'offline'
+        };
+        return statusMap[backendStatus.toLowerCase()] || 'available';
+    }
+
+    // Map frontend status to backend status
+    function mapToBackendStatus(frontendStatus) {
+        const statusMap = {
+            'available': 'active',
+            'busy': 'busy',
+            'offline': 'offline'
+        };
+        return statusMap[frontendStatus] || 'active';
+    }
+
+    // Save master to backend
+    async function saveMaster() {
+        const form = document.getElementById('masterForm');
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+        
+        // Prepare master data
+        const masterData = {
+            name: document.getElementById('masterName').value.trim(),
+            surname: document.getElementById('masterSurname').value.trim(),
+            phone: document.getElementById('masterPhone').value.trim(),
+            specialization: document.getElementById('masterSpecialization').value,
+            experience: parseFloat(document.getElementById('masterExperience').value) || 0,
+            status: mapToBackendStatus(document.getElementById('masterStatus').value),
+            rating: parseFloat(document.getElementById('masterRating').value) || 0,
+            schedule: document.getElementById('masterSchedule').value.trim(),
+            salary: parseInt(document.getElementById('masterSalary').value) || 0,
+            notes: document.getElementById('masterNotes').value.trim(),
+            skills: currentSkills
+        };
+        
+        // Validate required fields
+        if (!masterData.name || !masterData.surname) {
+            showToast('Имя и фамилия обязательны', 'error');
+            return;
+        }
+        
+        try {
+            showLoading(true);
+            let response;
+            let method;
+            let url;
+            
+            if (isEditing && currentEditId) {
+                // Update existing master
+                method = 'PUT';
+                url = `/api/masters/${currentEditId}`;
+            } else {
+                // Create new master
+                method = 'POST';
+                url = '/api/masters';
+            }
+            
+            response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(masterData)
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.detail || `HTTP error! status: ${response.status}`);
+            }
+            
+            const result = await response.json();
+            
+            // Reload masters from server
+            await loadMasters();
+            
+            showToast(result.message || 'Мастер сохранен', 'success');
+            closeModal();
+            
+        } catch (error) {
+            console.error('Ошибка сохранения мастера:', error);
+            showToast(`Ошибка сохранения: ${error.message}`, 'error');
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    // Delete master from backend
+    async function deleteMaster(masterId) {
+        const master = mastersData.find(m => m.id == masterId);
+        if (!master) {
+            showToast('Мастер не найден', 'error');
+            return;
+        }
+        
+        if (!confirm(`Вы уверены, что хотите удалить мастера "${master.fullName}"?`)) {
+            return;
+        }
+        
+        try {
+            showLoading(true);
+            const response = await fetch(`/api/masters/${masterId}`, {
+                method: 'DELETE'
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.detail || `HTTP error! status: ${response.status}`);
+            }
+            
+            const result = await response.json();
+            
+            // Remove from local data
+            const index = mastersData.findIndex(m => m.id == masterId);
+            if (index !== -1) {
+                mastersData.splice(index, 1);
+            }
+            
+            updateStats();
+            renderMastersGrid();
+            showToast(result.message || 'Мастер удален', 'success');
+            
+        } catch (error) {
+            console.error('Ошибка удаления мастера:', error);
+            showToast(`Ошибка удаления: ${error.message}`, 'error');
+        } finally {
+            showLoading(false);
+    }
+    }
+
+    // Setup event listeners
+    function setupEventListeners() {
+        // Search input
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', function(e) {
+                currentSearch = e.target.value.toLowerCase();
+                renderMastersGrid();
+            });
+        }
+        
+        // New master button
+        const newMasterBtn = document.getElementById('newMasterBtn');
+        if (newMasterBtn) {
+            newMasterBtn.addEventListener('click', createNewMaster);
+        }
+        
+        // Schedule button
+        const scheduleBtn = document.getElementById('scheduleBtn');
+        if (scheduleBtn) {
+            scheduleBtn.addEventListener('click', showSchedule);
+        }
+        
+        // Modal buttons
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', closeModal);
+        }
+        
+        const cancelBtn = document.getElementById('cancelBtn');
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', closeModal);
+        }
+        
+        const saveMasterBtn = document.getElementById('saveMasterBtn');
+        if (saveMasterBtn) {
+            saveMasterBtn.addEventListener('click', saveMaster);
+        }
+        
+        // Skills
+        const addSkillBtn = document.getElementById('addSkillBtn');
+        if (addSkillBtn) {
+            addSkillBtn.addEventListener('click', addSkill);
+        }
+        
+        const newSkillInput = document.getElementById('newSkillInput');
+        if (newSkillInput) {
+            newSkillInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addSkill();
+                }
+            });
+        }
+        
+        // Close modal on outside click
+        const masterModal = document.getElementById('masterModal');
+        if (masterModal) {
+            masterModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+        }
+        
+        // Allow form submission on Enter in input fields
+        const formInputs = document.querySelectorAll('#masterForm input, #masterForm select, #masterForm textarea');
+        formInputs.forEach(input => {
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    const form = document.getElementById('masterForm');
+                    if (form.checkValidity()) {
+                        saveMaster();
+                    } else {
+                        form.reportValidity();
+                    }
+                }
+            });
+        });
+    }
+
+    // Show loading state
+    function showLoading(isLoading) {
+        const saveBtn = document.getElementById('saveMasterBtn');
+        if (saveBtn) {
+            if (isLoading) {
+                saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Сохранение...';
+                saveBtn.disabled = true;
+            } else {
+                saveBtn.innerHTML = isEditing ? 'Сохранить' : 'Создать';
+                saveBtn.disabled = false;
+            }
+        }
+        
+        // Можно добавить общий индикатор загрузки для страницы
+        const grid = document.getElementById('mastersGrid');
+        if (isLoading && grid && grid.children.length === 0) {
+            grid.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 1rem; display: block;"></i>
+                    <p>Загрузка данных...</p>
+                </div>
+            `;
+        }
+    }
+
+    // Create new master
+    function createNewMaster() {
+        isEditing = false;
+        currentEditId = null;
+        currentSkills = [];
+        
+        // Reset form
+        document.getElementById('masterForm').reset();
+        document.getElementById('masterName').focus();
+        document.getElementById('modalTitle').textContent = 'Новый мастер';
+        document.getElementById('saveMasterBtn').textContent = 'Создать';
+        document.getElementById('masterStatus').value = 'available';
+        document.getElementById('masterRating').value = 4.5;
+        document.getElementById('masterExperience').value = 1;
+        
+        // Clear skills
+        const skillsContainer = document.getElementById('skillsContainer');
+        if (skillsContainer) {
+            skillsContainer.innerHTML = '';
+        }
+        
+        // Show modal
+        document.getElementById('masterModal').classList.add('active');
+    }
+
+    // Edit master
+    async function editMaster(masterId) {
+        try {
+            showLoading(true);
+            
+            // First try to get master from local data
+            const master = mastersData.find(m => m.id == masterId);
+            if (!master) {
+                // If not found locally, try to fetch from API
+                const response = await fetch(`/api/masters/${masterId}`);
+                if (!response.ok) {
+                    throw new Error('Мастер не найден');
+                }
+                // This would require additional handling
+            }
+            
+            isEditing = true;
+            currentEditId = masterId;
+            currentSkills = [...(master.skills || [])];
+            
+            // Fill form with master data
+            document.getElementById('masterName').value = master.name || '';
+            document.getElementById('masterSurname').value = master.surname || '';
+            document.getElementById('masterPhone').value = master.phone || '';
+            document.getElementById('masterSpecialization').value = master.specialization || 'Универсал';
+            document.getElementById('masterExperience').value = master.experience || 0;
+            document.getElementById('masterStatus').value = master.status || 'available';
+            document.getElementById('masterRating').value = master.rating || 4.5;
+            document.getElementById('masterSchedule').value = master.schedule || '';
+            document.getElementById('masterSalary').value = master.salary || 0;
+            document.getElementById('masterNotes').value = master.notes || '';
+            
+            // Fill skills
+            const skillsContainer = document.getElementById('skillsContainer');
+            if (skillsContainer) {
+                skillsContainer.innerHTML = '';
+                currentSkills.forEach(skill => {
+                    if (skill && skill.trim()) {
+                        const skillTag = document.createElement('span');
+                        skillTag.className = 'skill-tag-input';
+                        skillTag.innerHTML = `
+                            ${skill}
+                            <span class="remove-skill" data-skill="${skill}">&times;</span>
+                        `;
+                        skillsContainer.appendChild(skillTag);
+                    }
+                });
+                
+                // Add event listeners to remove buttons
+                document.querySelectorAll('.remove-skill').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const skillToRemove = this.dataset.skill;
+                        currentSkills = currentSkills.filter(s => s !== skillToRemove);
+                        this.parentElement.remove();
+                    });
+                });
+            }
+            
+            document.getElementById('modalTitle').textContent = 'Редактировать мастера';
+            document.getElementById('saveMasterBtn').textContent = 'Сохранить';
+            
+            // Show modal
+            document.getElementById('masterModal').classList.add('active');
+            
+        } catch (error) {
+            console.error('Ошибка редактирования мастера:', error);
+            showToast(`Ошибка: ${error.message}`, 'error');
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    // View master details
+    function viewMaster(masterId) {
+        const master = mastersData.find(m => m.id == masterId);
+        if (!master) {
+            showToast('Мастер не найден', 'error');
+            return;
+        }
+        
+        // Create a detailed view modal or alert
+        const details = `
+Просмотр мастера: ${master.fullName}
+Специализация: ${master.specialization}
+Опыт: ${master.experience} лет
+Рейтинг: ${master.rating} ⭐
+Телефон: ${master.phone || 'не указан'}
+Навыки: ${master.skills.join(', ') || 'нет'}
+Статус: ${master.status === 'available' ? 'Доступен' : master.status === 'busy' ? 'Занят' : 'Недоступен'}
+Заявок в работе: ${master.activeOrders} из 5
+Выполнено заявок: ${master.completedOrders}
+График: ${master.schedule || 'не указан'}
+Зарплата: ${master.salary ? master.salary + ' сомони/мес' : 'не указана'}
+Примечания: ${master.notes || 'нет'}
+        `.trim();
+        
+        alert(details);
+    }
+
+    // Add skill
+    function addSkill() {
+        const input = document.getElementById('newSkillInput');
+        if (!input) return;
+        
+        const skill = input.value.trim();
+        
+        if (skill && !currentSkills.includes(skill)) {
+            currentSkills.push(skill);
+            
+            const skillsContainer = document.getElementById('skillsContainer');
+            if (skillsContainer) {
+                const skillTag = document.createElement('span');
+                skillTag.className = 'skill-tag-input';
+                skillTag.innerHTML = `
+                    ${skill}
+                    <span class="remove-skill" data-skill="${skill}">&times;</span>
+                `;
+                skillsContainer.appendChild(skillTag);
+                
+                // Add event listener to remove button
+                skillTag.querySelector('.remove-skill').addEventListener('click', function() {
+                    const skillToRemove = this.dataset.skill;
+                    currentSkills = currentSkills.filter(s => s !== skillToRemove);
+                    this.parentElement.remove();
+                });
+            }
+            
+            input.value = '';
+            input.focus();
+        }
+    }
+
+    // Show schedule
+    function showSchedule() {
+        // Simple schedule view for all masters
+        let scheduleText = "📅 График работы мастеров:\n\n";
+        
+        mastersData.forEach(master => {
+            if (master.schedule) {
+                scheduleText += `${master.fullName}: ${master.schedule}\n`;
+            }
+        });
+        
+        if (scheduleText === "📅 График работы мастеров:\n\n") {
+            scheduleText += "График работы не указан";
+        }
+        
+        alert(scheduleText);
+    }
+
+    // Close modal
+    function closeModal() {
+        document.getElementById('masterModal').classList.remove('active');
+        document.getElementById('masterForm').reset();
+        currentSkills = [];
+        const skillsContainer = document.getElementById('skillsContainer');
+        if (skillsContainer) {
+            skillsContainer.innerHTML = '';
+        }
+    }
+
+    // Update statistics
+    function updateStats() {
+        const total = mastersData.length;
+        const available = mastersData.filter(m => m.status === 'available').length;
+        const averageRating = total
+            ? mastersData.reduce((sum, m) => sum + (m.rating || 0), 0) / total
+            : 0;
+        const activeOrders = mastersData.reduce((sum, m) => sum + (m.activeOrders || 0), 0);
+        
+        // Update DOM elements safely
+        const totalMastersEl = document.getElementById('totalMasters');
+        const availableMastersEl = document.getElementById('availableMasters');
+        const averageRatingEl = document.getElementById('averageRating');
+        const activeOrdersEl = document.getElementById('activeOrders');
+        
+        if (totalMastersEl) totalMastersEl.textContent = total;
+        if (availableMastersEl) availableMastersEl.textContent = available;
+        if (averageRatingEl) averageRatingEl.textContent = averageRating.toFixed(1);
+        if (activeOrdersEl) activeOrdersEl.textContent = activeOrders;
+    }
+
+    // Render masters grid
+    function renderMastersGrid() {
+        const grid = document.getElementById('mastersGrid');
+        if (!grid) return;
+        
+        grid.innerHTML = '';
+
+        const filteredMasters = currentSearch.trim() ? 
+            mastersData.filter(master => 
+                (master.fullName && master.fullName.toLowerCase().includes(currentSearch)) ||
+                (master.specialization && master.specialization.toLowerCase().includes(currentSearch)) ||
+                (master.skills && master.skills.some(skill => 
+                    skill && skill.toLowerCase().includes(currentSearch)
+                ))
+            ) : mastersData;
+
+        if (filteredMasters.length === 0) {
+            grid.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--gray-500);">
+                    <i class="fas fa-user-cog" style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+                    <p>${currentSearch ? 'Мастера не найдены' : 'Нет мастеров в системе'}</p>
+                    <p style="font-size: 0.875rem; margin-top: 0.5rem;">
+                        ${currentSearch ? 'Попробуйте изменить параметры поиска' : 'Добавьте первого мастера'}
+                    </p>
+                </div>
+            `;
+        } else {
+            filteredMasters.forEach(master => {
+                const initials = master.name && master.surname 
+                    ? `${master.name[0]}${master.surname[0]}`.toUpperCase()
+                    : master.name ? master.name[0].toUpperCase() : '?';
+                const progress = Math.min(((master.activeOrders || 0) / 5) * 100, 100);
+                
+                const card = document.createElement('div');
+                card.className = 'master-card';
+                card.innerHTML = `
+                    <div class="master-header">
+                        <div class="master-avatar" style="background-color: ${master.avatarColor}">${initials}</div>
+                        <div class="master-info">
+                            <h3>${master.fullName}</h3>
+                            <p>${master.specialization || 'Специализация не указана'}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="master-stats">
+                        <div class="stat-row">
+                            <span class="stat-label">Опыт:</span>
+                            <span class="stat-value">${master.experience || 0} ${master.experience === 1 ? 'год' : master.experience > 1 && master.experience < 5 ? 'года' : 'лет'}</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Рейтинг:</span>
+                            <span class="stat-value">
+                                <i class="fas fa-star" style="color: #F59E0B;"></i> ${(master.rating || 0).toFixed(1)}
+                            </span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Заявок в работе:</span>
+                            <span class="stat-value">${master.activeOrders || 0} из 5</span>
+                        </div>
+                        
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progress}%"></div>
+                        </div>
+                        
+                        <div class="stat-row">
+                            <span class="stat-label">Выполнено заявок:</span>
+                            <span class="stat-value">${master.completedOrders || 0}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="master-skills">
+                        <div class="skills-title">Навыки:</div>
+                        <div class="skills-list">
+                            ${master.skills && master.skills.length > 0 
+                                ? master.skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('') 
+                                : '<span style="color: var(--gray-400); font-size: 0.875rem;">Навыки не указаны</span>'}
+                        </div>
+                    </div>
+                    
+                    <div class="master-footer">
+                        <span class="status-badge status-${master.status || 'available'}">
+                            ${master.status === 'available' ? 'Доступен' : 
+                              master.status === 'busy' ? 'Занят' : 'Недоступен'}
+                        </span>
+                        <div class="master-actions">
+                            <button class="action-btn view-master-btn" data-id="${master.id}" title="Просмотр">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn edit-master-btn" data-id="${master.id}" title="Редактировать">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn delete-master-btn" data-id="${master.id}" title="Удалить">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Add event listeners to action buttons
+        document.querySelectorAll('.view-master-btn').forEach(btn => {
+            btn.addEventListener('click', () => viewMaster(btn.dataset.id));
+        });
+
+        document.querySelectorAll('.edit-master-btn').forEach(btn => {
+            btn.addEventListener('click', () => editMaster(btn.dataset.id));
+        });
+
+        document.querySelectorAll('.delete-master-btn').forEach(btn => {
+            btn.addEventListener('click', () => deleteMaster(btn.dataset.id));
+        });
+    }
+
+    // Show notification toast
+    function showToast(message, type = 'info') {
+        // Remove existing toast
+        const existingToast = document.querySelector('.toast-notification');
+        if (existingToast) {
+            existingToast.remove();
+        }
+        
+        // Create new toast
+        const toast = document.createElement('div');
+        toast.className = `toast-notification toast-${type}`;
+        toast.innerHTML = `
+            <span>${message}</span>
+            <button class="toast-close">&times;</button>
+        `;
+        
+        // Add styles
+        toast.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        `;
+        
+        // Set background based on type
+        const colors = {
+            success: 'var(--secondary-color, #10B981)',
+            error: 'var(--danger-color, #EF4444)',
+            info: 'var(--primary-color, #2563EB)',
+            warning: 'var(--warning-color, #F59E0B)'
+        };
+        toast.style.backgroundColor = colors[type] || colors.info;
+        
+        // Add close button event
+        toast.querySelector('.toast-close').addEventListener('click', () => {
+            toast.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => {
+                if (toast.parentNode) toast.remove();
+            }, 300);
+        });
+        
+        document.body.appendChild(toast);
+        
+        // Add CSS animations if not already added
+        if (!document.querySelector('#toast-styles')) {
+            const style = document.createElement('style');
+            style.id = 'toast-styles';
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOut {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (toast.parentNode) toast.remove();
+                }, 300);
+            }
+        }, 5000);
+    }
+
+    // Helper function to generate random color
+    function getRandomColor() {
+        const colors = [
+            '#2563EB', '#1D4ED8', '#10B981', '#059669', 
+            '#F59E0B', '#D97706', '#EF4444', '#DC2626',
+            '#8B5CF6', '#7C3AED', '#EC4899', '#DB2777'
+        ];
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
+</script>
+</body>
+</html>
